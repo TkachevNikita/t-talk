@@ -4,7 +4,13 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     project: './tsconfig.eslint.json',
   },
-  ignorePatterns: ['.eslintrc.js', '*.config.js', '*.config.ts', 'e2e/*'],
+  ignorePatterns: [
+    'environments/environment.ts',
+    '.eslintrc.js',
+    '*.config.js',
+    '*.config.ts',
+    'e2e/*',
+  ],
   extends: ['plugin:@taiga-ui/experience/all'],
   overrides: [
     {
