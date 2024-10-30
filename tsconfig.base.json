@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@t-talk/auth": ["libs/auth/src/index.ts"]
+      "@t-talk/auth": ["libs/auth/src/index.ts"],
+      "@t-talk/shared": ["libs/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
