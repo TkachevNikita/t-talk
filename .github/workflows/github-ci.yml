@@ -34,7 +34,7 @@ jobs:
             - name: Build project
               run: |
                 npm run build
-                mv dist/t-talk/browser/* dist/
+                mv dist/t-talk/browser/* dist/t-talk
 
             - name: Deploy
               uses: JamesIves/github-pages-deploy-action@v4.5.0
