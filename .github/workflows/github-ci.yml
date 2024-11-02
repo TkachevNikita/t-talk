@@ -32,7 +32,9 @@ jobs:
                 echo "};" >> environments/environment.ts
 
             - name: Build project
-              run: npm run build
+              run: |
+                npm run build
+                mv dist/t-talk/browser/* dist/
 
             - name: Deploy
               uses: JamesIves/github-pages-deploy-action@v4.5.0
