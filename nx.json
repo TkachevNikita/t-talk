@@ -15,7 +15,6 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.gitlab-ci.yml"]
   },
-  "nxCloudId": "671f58e4359a751d64d5e236",
   "targetDefaults": {
     "@angular-devkit/build-angular:application": {
       "cache": true,
