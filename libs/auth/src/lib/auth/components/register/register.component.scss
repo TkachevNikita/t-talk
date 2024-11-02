@@ -9,6 +9,12 @@
       display: flex;
       gap: 30px;
     }
+
+    &--control {
+      display: flex;
+      flex-direction: column;
+    }
+
     &--gender {
       width: 100%;
     }
@@ -36,5 +42,9 @@
     display: flex;
     justify-content: center;
     gap: 10px;
+  }
+
+  &__stepper {
+    justify-content: space-between;
   }
 }

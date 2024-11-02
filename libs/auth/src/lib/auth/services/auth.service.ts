@@ -3,7 +3,6 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
   UserCredential,
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
@@ -23,11 +22,6 @@ export class AuthService implements IAuthService {
     ).pipe(
       switchMap((userCred) => {
         const userRef = doc(this.fireStore, `users/${userCred.user.uid}`);
-
-        updateProfile(userCred.user, {
-          displayName: `${user.firstName} ${user.secondName}`,
-        });
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...newUser } = user;
 

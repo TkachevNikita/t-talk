@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -9,6 +9,8 @@ import { RouterLink } from '@angular/router';
 import { TuiButton, TuiIcon, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiChip, TuiComment, TuiPassword } from '@taiga-ui/kit';
 import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -31,8 +33,19 @@ import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
+  private readonly authService: AuthService = inject(AuthService);
+
   protected readonly loginForm = new FormGroup({
     email: new FormControl<string>('', [Validators.required]),
     password: new FormControl<string>('', [Validators.required]),
   });
+
+  protected login(): void {
+    this.authService
+      .login(
+        this.loginForm.controls.email.value!,
+        this.loginForm.controls.password.value!,
+      )
+      .subscribe();
+  }
 }

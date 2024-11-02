@@ -1,6 +1,11 @@
 import type { AbstractControl } from '@angular/forms';
 import { TuiValidationError } from '@taiga-ui/cdk';
 
+/**
+ * Возвращает ошибку пользовательского ввода
+ * @param {AbstractControl} control - контрол для проверки
+ * @return {TuiValidationError | null} - валидационная ошибка, если она присутствует, иначе null
+ */
 export const errorMatcher = (
   control: AbstractControl,
 ): TuiValidationError | null => {

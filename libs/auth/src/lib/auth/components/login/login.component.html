@@ -9,7 +9,7 @@
     <tui-input
       type="email"
       formControlName="email"
-      tuiTextfieldSize="m"
+      tuiTextfieldSize="l"
       [tuiTextfieldCleaner]="true"
     >
       Введите email
@@ -17,12 +17,14 @@
     <tui-input
       type="password"
       formControlName="password"
-      tuiTextfieldSize="m"
+      tuiTextfieldSize="l"
       [tuiTextfieldCleaner]="true"
     >
       Введите пароль
     </tui-input>
     <button
+      [disabled]="loginForm.invalid"
+      (click)="login()"
       appearance="primary"
       size="m"
       tuiButton
