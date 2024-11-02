@@ -22,14 +22,14 @@ jobs:
 
             - name: Create environment file
               run: |
-                echo "export const environment = {" > src/environments/environment.ts
-                echo "  apiKey: '${{ secrets.API_KEY }}'," >> src/environments/environment.ts
-                echo "  authDomain: '${{ secrets.AUTH_DOMAIN }}'," >> src/environments/environment.ts
-                echo "  projectId: '${{ secrets.PROJECT_ID }}'," >> src/environments/environment.ts
-                echo "  storageBucket: '${{ secrets.STORAGE_BUCKET }}'," >> src/environments/environment.ts
-                echo "  messagingSenderId: '${{ secrets.MESSAGING_SENDER_ID }}'," >> src/environments/environment.ts
-                echo "  appId: '${{ secrets.APP_ID }}'" >> src/environments/environment.ts
-                echo "};" >> src/environments/environment.prod.ts
+                echo "export const environment = {" > environments/environment.ts
+                echo "  apiKey: '${{ secrets.API_KEY }}'," >> environments/environment.ts
+                echo "  authDomain: '${{ secrets.AUTH_DOMAIN }}'," >> environments/environment.ts
+                echo "  projectId: '${{ secrets.PROJECT_ID }}'," >> environments/environment.ts
+                echo "  storageBucket: '${{ secrets.STORAGE_BUCKET }}'," >> environments/environment.ts
+                echo "  messagingSenderId: '${{ secrets.MESSAGING_SENDER_ID }}'," >> environments/environment.ts
+                echo "  appId: '${{ secrets.APP_ID }}'" >> environments/environment.ts
+                echo "};" >> environments/environment.ts
 
             - name: Build project
               run: npm run build
