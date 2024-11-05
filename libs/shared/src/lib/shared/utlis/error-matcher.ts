@@ -35,5 +35,9 @@ export const errorMatcher = (
     return new TuiValidationError('Поле может содержать только буквы');
   }
 
+  if (control.hasError('passwordsMismatch')) {
+    return new TuiValidationError('Пароль должен совпадать');
+  }
+
   return null;
 };
