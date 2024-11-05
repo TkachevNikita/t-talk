@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   inject,
+  OnInit,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -13,16 +14,22 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { errorMatcher, Gender, lettersOnlyValidator } from '@t-talk/shared';
+import {
+  errorMatcher,
+  Gender,
+  lettersOnlyValidator,
+  matchPasswordValidator,
+} from '@t-talk/shared';
 import { TuiDay, TuiValidationError } from '@taiga-ui/cdk';
 import {
   TuiButton,
   TuiError,
   TuiIcon,
   TuiLink,
+  TuiTextfield,
   TuiTextfieldOptionsDirective,
 } from '@taiga-ui/core';
-import { TuiBlock, TuiRadio, TuiStepper } from '@taiga-ui/kit';
+import { TuiBlock, TuiPassword, TuiRadio, TuiStepper } from '@taiga-ui/kit';
 import {
   TuiInputDateModule,
   TuiInputModule,
@@ -45,16 +52,18 @@ import { AuthService } from '../../services/auth.service';
     TuiInputDateModule,
     TuiInputModule,
     TuiLink,
+    TuiPassword,
     TuiRadio,
     TuiStepper,
     TuiTextareaModule,
+    TuiTextfield,
     TuiTextfieldOptionsDirective,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -72,8 +81,22 @@ export class RegisterComponent {
     birthDate: new FormControl<TuiDay | null>(null, Validators.required),
     email: new FormControl<string>('', Validators.required),
     password: new FormControl<string>('', Validators.required),
+    repeatPassword: new FormControl<string>('', [
+      Validators.required,
+      matchPasswordValidator,
+    ]),
     bio: new FormControl<string>(''),
   });
+
+  public ngOnInit(): void {
+    const passwordControl = this.registerForm.controls['password'];
+    const repeatPasswordControl = this.registerForm.controls['repeatPassword'];
+
+    repeatPasswordControl.addValidators(
+      matchPasswordValidator(passwordControl),
+    );
+    repeatPasswordControl.updateValueAndValidity();
+  }
 
   protected register(): void {
     this.authService

@@ -14,14 +14,16 @@
     >
       Введите email
     </tui-input>
-    <tui-input
-      type="password"
-      formControlName="password"
-      tuiTextfieldSize="l"
-      [tuiTextfieldCleaner]="true"
-    >
-      Введите пароль
-    </tui-input>
+    <tui-textfield>
+      <label tuiLabel>Введите пароль</label>
+      <input
+          formControlName="password"
+          placeholder="Повторите пароль"
+          tuiTextfield
+          type="password"
+      />
+      <tui-icon tuiPassword />
+    </tui-textfield>
     <button
       [disabled]="loginForm.invalid"
       (click)="login()"

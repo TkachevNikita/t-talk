@@ -108,22 +108,29 @@
         >
           Введите email
         </tui-input>
-        <tui-input
-          type="password"
-          formControlName="password"
-          tuiTextfieldSize="m"
-          [tuiTextfieldCleaner]="true"
-        >
-          Введите пароль
-        </tui-input>
-        <tui-input
-          type="password"
-          formControlName="password"
-          tuiTextfieldSize="m"
-          [tuiTextfieldCleaner]="true"
-        >
-          Повторите пароль
-        </tui-input>
+        <tui-textfield>
+          <label tuiLabel>Введите пароль</label>
+          <input
+              formControlName="password"
+              placeholder="Повторите пароль"
+              tuiTextfield
+              type="password"
+          />
+          <tui-icon tuiPassword />
+        </tui-textfield>
+        <div class="register__form--control">
+            <tui-textfield>
+                <label tuiLabel>Повторите пароль</label>
+                <input
+                    formControlName="repeatPassword"
+                    placeholder="Повторите пароль"
+                    tuiTextfield
+                    type="password"
+                />
+                <tui-icon tuiPassword />
+            </tui-textfield>
+            <tui-error [error]="computeError('repeatPassword')"/>
+        </div>
         <button
           [disabled]="registerForm.invalid"
           appearance="primary"
