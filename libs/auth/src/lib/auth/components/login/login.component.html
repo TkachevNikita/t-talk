@@ -1,0 +1,44 @@
+<div class="login">
+  <form class="login__form" [formGroup]="loginForm">
+    <div class="login__head">
+      <img src="logo.png" class="login__logo" alt="tbank-logo">
+      <h2 class="login__title">
+        Авторизация
+      </h2>
+    </div>
+    <tui-input
+      type="email"
+      formControlName="email"
+      tuiTextfieldSize="l"
+      [tuiTextfieldCleaner]="true"
+    >
+      Введите email
+    </tui-input>
+    <tui-textfield>
+      <label tuiLabel>Введите пароль</label>
+      <input
+          formControlName="password"
+          placeholder="Повторите пароль"
+          tuiTextfield
+          type="password"
+      />
+      <tui-icon tuiPassword />
+    </tui-textfield>
+    <button
+      [disabled]="loginForm.invalid"
+      (click)="login()"
+      appearance="primary"
+      size="m"
+      tuiButton
+      type="button"
+    >
+      Войти
+    </button>
+  </form>
+  <div class="login__message">
+    <span>Нет аккаунта?</span>
+    <a tuiLink [routerLink]="'/auth/register'">Зарегистрироваться</a>
+  </div>
+</div>
+
+
