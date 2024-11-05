@@ -7,7 +7,7 @@ module.exports = {
   ignorePatterns: [
     'environments/environment.ts',
     '.eslintrc.js',
-    '*.config.js',
+    '*.config.*',
     '*.config.ts',
     'e2e/*',
   ],
