@@ -1,0 +1,1 @@
+import{ca as i}from"./chunk-26FXOFCC.js";var o=(()=>{class e{transform(r,t,...n){return t(r,...n)}static{this.\u0275fac=function(t){return new(t||e)}}static{this.\u0275pipe=i({name:"tuiMapper",type:e,pure:!0,standalone:!0})}}return e})();export{o as a};
