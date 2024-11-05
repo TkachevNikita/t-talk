@@ -14,6 +14,11 @@ export const appRoutes: Route[] = [
         loadChildren: async () =>
           import('@t-talk/auth').then((m) => m.authRoutes),
       },
+      {
+        path: 'profile',
+        loadChildren: async () =>
+          import('@t-talk/profile').then((m) => m.profileRoutes),
+      },
     ],
   },
 ];

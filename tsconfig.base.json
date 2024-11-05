@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@t-talk/auth": ["libs/auth/src/index.ts"],
+      "@t-talk/profile": ["libs/profile/src/index.ts"],
       "@t-talk/shared": ["libs/shared/src/index.ts"]
     }
   },
