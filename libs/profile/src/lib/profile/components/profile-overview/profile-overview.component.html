@@ -4,18 +4,18 @@
             src="@tui.user"
             size="xxl"
         />
-        <div class="profile__info">
+        <div class="profile__info" *tuiLet="user$ | async as user">
             <div class="profile__group">
-                <h1>Ткачев Никита</h1>
+                <h1>{{user?.firstName}} {{user?.secondName}}</h1>
             </div>
             <div class="profile__group">
-                <span [style.font-weight]="600">Дата рождения:</span> 04.05.2003
+                <span [style.font-weight]="600">Дата рождения:</span> {{user?.birthDate}}
             </div>
             <div class="profile__group">
-                <span [style.font-weight]="600">Пол:</span> мужской
+                <span [style.font-weight]="600">Пол:</span> {{ user?.gender }}
             </div>
             <div class="profile__group">
-                <span [style.font-weight]="600">О себе:</span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum eaque eum exercitationem harum itaque labore minus modi, molestiae optio quae quam saepe unde ut? Commodi eos incidunt inventore repudiandae sit.
+                <span [style.font-weight]="600">О себе:</span> {{ user?.bio }}
             </div>
         </div>
      </div>
