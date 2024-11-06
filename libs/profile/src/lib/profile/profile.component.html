@@ -1,0 +1,74 @@
+<header tuiNavigationHeader>
+    <span tuiNavigationLogo>
+        <img src="logo.png" [style.width]="'30px'" alt="logo"/>
+        <span tuiFade>T-Talk</span>
+    </span>
+    <hr />
+    <button
+        iconStart="@tui.bell"
+        tuiIconButton
+        type="button"
+    >
+        Notifications
+        <tui-badge-notification />
+    </button>
+    <button
+        iconStart="@tui.ellipsis"
+        tuiIconButton
+        type="button"
+    >
+        More
+    </button>
+    <tui-avatar src="AI" />
+</header>
+<div [style.display]="'flex'" [style.height]="'100%'">
+    <aside
+        [tuiNavigationAside]="expanded"
+    >
+        <header>
+            <button
+                iconStart="@tui.home"
+                tuiAsideItem
+                type="button"
+            >
+                <span tuiFade>
+                    Моя страница
+                </span>
+            </button>
+        </header>
+        <button
+            iconStart="@tui.search"
+            tuiAsideItem
+            type="button"
+        >
+            Поиск
+        </button>
+        <a
+            iconStart="@tui.users"
+            tuiAsideItem
+        >
+            Мои друзья
+        </a>
+        <button
+            automation-id="hint"
+            iconStart="@tui.message-circle"
+            tuiAsideItem
+            type="button"
+        >
+            <span tuiFade>Мои сообщения</span>
+        </button>
+        <footer>
+            <button
+                tuiAsideItem
+                type="button"
+                [iconStart]="expanded ? '@tui.chevron-left' : '@tui.chevron-right'"
+                (click)="expanded = !expanded"
+            >
+                {{ expanded ? 'Скрыть' : 'Раскрыть' }}
+            </button>
+        </footer>
+    </aside>
+    <main tuiNavigationMain class="main">
+        <router-outlet/>
+    </main>
+</div>

@@ -25,6 +25,7 @@
     "@taiga-ui/event-plugins": "^4.0.2",
     "@taiga-ui/icons": "^4.13.0",
     "@taiga-ui/kit": "^4.13.0",
+    "@taiga-ui/layout": "^4.14.0",
     "@taiga-ui/legacy": "^4.7.0",
     "@taiga-ui/polymorpheus": "^4.7.2",
     "@typescript-eslint/utils": "^8.6.0",
