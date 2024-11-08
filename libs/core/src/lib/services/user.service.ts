@@ -26,7 +26,7 @@ export class UserService {
   }
 
   public getUserData(): Observable<UserModel | null> {
-    this.isUserLoading$.next(true); // Устанавливаем флаг загрузки
+    this.isUserLoading$.next(true);
 
     return this.user$.pipe(
       switchMap((user) => {
@@ -38,6 +38,7 @@ export class UserService {
               ? new UserModel({
                   uid: user?.uid,
                   ...docSnapshot.data(),
+                  birthDate: docSnapshot.data()['birthDate'].toDate(),
                 } as IUser)
               : null,
           ),
