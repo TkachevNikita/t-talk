@@ -1,0 +1,101 @@
+<div class="profile" *tuiLet="user$ | async as user">
+    <div class="profile__container" *tuiLet="isUserLoading$ | async as isLoading">
+        <div class="profile__head">
+            <img
+                [src]="user?.profilePictureId"
+                alt="avatar"
+                class="profile__avatar"
+                [tuiSkeleton]="isLoading!"
+            />
+            <div class="profile__info">
+                @if (isLoading || user) {
+
+                    <div class="profile__group">
+                        <h1 [tuiSkeleton]="isLoading ? 10 : 0">
+                            {{user?.firstName}} {{user?.secondName}}
+                        </h1>
+                    </div>
+                    <div class="profile__group" [tuiSkeleton]="isLoading! && 10">
+                        <span [style.font-weight]="600">Дата рождения:</span> {{user?.birthDate | date: 'dd.MM.yyyy'}}
+                    </div>
+                    <div class="profile__group" [tuiSkeleton]="isLoading! && 5">
+                        <span [style.font-weight]="600">Пол:</span>
+                        @switch (user?.gender) {
+                            @case (0) {
+                                Мужской
+                            }
+                            @case (1) {
+                                Женский
+                            }
+                        }
+                    </div>
+                    <div class="profile__group" [tuiSkeleton]="isLoading! && 40">
+                        <span [style.font-weight]="600">О себе:</span> {{ user?.bio }}
+                    </div>
+                } @else {
+                    404 не найдена
+                }
+            </div>
+            @if (isCurrentUser) {
+                <button
+                    size="s"
+                    tuiButton
+                    type="button"
+                    [style.margin-left]="'auto'"
+                    [style.align-self]="'flex-start'"
+                >
+                    <tui-icon icon="@tui.pencil" />
+                    Редактировать
+                </button>
+            }
+        </div>
+        <div class="profile__body">
+            <div class="profile__posts">
+                @if (isCurrentUser) {
+                    <div class="profile__posts--input">
+                        <tui-avatar size="s" [src]="user?.profilePictureId" />
+                        <tui-textarea
+                            [formControl]="postControl"
+                            [style.width]="'100%'"
+                        >
+                            Что у вас нового?
+                        </tui-textarea>
+                    </div>
+                    <button
+                        size="m"
+                        tuiButton
+                        type="button"
+                        [style.align-self]="'flex-end'"
+                        [style.margin-top]="'20px'"
+                        [disabled]="postControl.invalid"
+                        (click)="createPost(user!.uid!)"
+                    >
+                        Отправить
+                    </button>
+                }
+                <div class="profile__posts--list" *tuiLet="posts$ | async as posts">
+                    @if (posts?.length === 0) {
+                        <div class="profile__posts--empty">
+                            <tui-icon
+                                    icon="@tui.gallery-vertical-end"
+                                    [style.font-size]="'48px'"
+                                    [style.font-weight]="'600'"
+                            />
+                            На стене пока нет ни одной записи
+                        </div>
+                    }
+
+                    @for (post of posts; track $index) {
+                        <lib-profile-post [post]="post"/>
+                    }
+                </div>
+            </div>
+            <div class="profile__subs profile-block">
+                <h2>Подписки</h2>
+                <div class="profile__subs--list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
