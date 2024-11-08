@@ -1,0 +1,155 @@
+<div class="register">
+  <form class="register__form" [formGroup]="registerForm">
+    <div class="register__head">
+      <img src="logo.png" class="register__logo">
+      <h2 class="register__title">
+        Регистрация
+      </h2>
+    </div>
+
+    <tui-stepper class="register__stepper" [(activeItemIndex)]="activeStepIndex">
+      <button
+        stepState="normal"
+        tuiStep
+        type="button"
+        >
+        Основная информация
+      </button>
+      <button
+        stepState="normal"
+        tuiStep
+        type="button"
+      >
+        Завершение
+      </button>
+    </tui-stepper>
+
+    @switch (activeStepIndex) {
+      @case (0) {
+        <div class="register__form--group">
+          <label class="register__form--gender" tuiBlock>
+            <input
+              formControlName="gender"
+              size="m"
+              tuiRadio
+              type="radio"
+              [value]="0"
+            />
+            Мужской
+          </label>
+          <label class="register__form--gender" tuiBlock>
+            <input
+              formControlName="gender"
+              size="m"
+              tuiRadio
+              type="radio"
+              [value]="1"
+            />
+            Женский
+          </label>
+        </div>
+
+        <div class="register__form--control">
+          <tui-input
+            formControlName="firstName"
+            tuiTextfieldSize="m"
+            [tuiTextfieldCleaner]="true"
+            style="width: 100%"
+          >
+            Введите имя
+          </tui-input>
+          <tui-error [error]="computeError('firstName')"/>
+        </div>
+        <div class="register__form--control">
+          <tui-input
+            formControlName="secondName"
+            tuiTextfieldSize="m"
+            [tuiTextfieldCleaner]="true"
+            style="width: 100%"
+          >
+            Введите фамилию
+          </tui-input>
+          <tui-error [error]="computeError('secondName')"/>
+        </div>
+        <div class="register__form--control">
+          <tui-input-date
+            formControlName="birthDate"
+            tuiTextfieldSize="s"
+          >
+            Выберите дату рождения
+          </tui-input-date>
+          <tui-error [error]="computeError('birthDate')"/>
+        </div>
+        <div class="register__form--control">
+          <tui-textarea formControlName="bio">
+            О себе
+          </tui-textarea>
+          <tui-error [error]="computeError('bio')"/>
+        </div>
+        <button
+          appearance="primary"
+          size="m"
+          tuiButton
+          type="button"
+          (click)="nextStep()"
+        >
+          Далее
+          <tui-icon
+            icon="@tui.arrow-right"
+          />
+        </button>
+      }
+      @case (1) {
+        <tui-input
+          type="email"
+          formControlName="email"
+          tuiTextfieldSize="m"
+          [tuiTextfieldCleaner]="true"
+        >
+          Введите email
+        </tui-input>
+        <tui-textfield>
+          <label tuiLabel>Введите пароль</label>
+          <input
+              formControlName="password"
+              placeholder="Повторите пароль"
+              tuiTextfield
+              type="password"
+          />
+          <tui-icon tuiPassword />
+        </tui-textfield>
+        <div class="register__form--control">
+            <tui-textfield>
+                <label tuiLabel>Повторите пароль</label>
+                <input
+                    formControlName="repeatPassword"
+                    placeholder="Повторите пароль"
+                    tuiTextfield
+                    type="password"
+                />
+                <tui-icon tuiPassword />
+            </tui-textfield>
+            <tui-error [error]="computeError('repeatPassword')"/>
+        </div>
+        <button
+          [disabled]="registerForm.invalid"
+          appearance="primary"
+          size="m"
+          tuiButton
+          type="button"
+          (click)="register()"
+        >
+          Зарегистрироваться
+        </button>
+      }
+    }
+  </form>
+  <div class="register__message">
+    <span>Уже есть аккаунт?</span>
+    <a tuiLink [routerLink]="'/auth/login'">
+      Войти
+    </a>
+  </div>
+</div>
+
+

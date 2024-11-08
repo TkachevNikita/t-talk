@@ -1,0 +1,40 @@
+<div class="post">
+    <div class="post__head" *tuiLet="user$ | async as user">
+        <tui-avatar
+            size="m"
+            [src]="user?.profilePictureId"
+        />
+        <div class="post__head--info">
+            <h3 class="post__head--title">
+                {{ user?.firstName }} {{ user?.secondName }}
+            </h3>
+            <p class="post__head--date">
+                {{post.createdAt | date: 'dd.MM.yyyy' }}
+            </p>
+        </div>
+    </div>
+    <div class="post__body">
+        {{post.content}}
+    </div>
+    <div class="post__actions">
+        <input
+            tuiLike="var(--tui-status-negative)"
+            type="checkbox"
+            size="s"
+            [(ngModel)]="liked"
+        />
+        <span class="post__actions--likes">5</span>
+    </div>
+    <span class="divider"></span>
+    <div class="post__comments">
+        <div class="post__comments--new">
+            <tui-avatar size="s"/>
+            <tui-input
+                [style.width]="'100%'"
+                [formControl]="commentControl"
+            >
+                Написать комментарий
+            </tui-input>
+        </div>
+    </div>
+</div>
