@@ -4,8 +4,8 @@ import { Gender } from '@t-talk/shared';
 export class UserModel {
   public readonly uid?: string;
   public readonly email: string;
-  public readonly birthDate: Date;
-  public readonly createdAt: Date;
+  public readonly birthDate?: Date;
+  public readonly createdAt?: Date;
   public readonly profilePictureId: string;
   public readonly bio: string;
   public readonly firstName: string;
@@ -14,9 +14,9 @@ export class UserModel {
 
   constructor(user: IUser) {
     this.uid = user.uid;
-    this.birthDate = user.birthDate;
+    this.birthDate = user.birthDate?.toDate();
     this.email = user.email;
-    this.createdAt = user.createdAt;
+    this.createdAt = user.createdAt?.toDate();
     this.profilePictureId = user.profilePictureId;
     this.bio = user.bio;
     this.firstName = user.firstName;

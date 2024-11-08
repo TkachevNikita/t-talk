@@ -8,4 +8,6 @@
   display: flex;
   justify-content: flex-start;
   padding-top: 20px;
+  height: calc(100vh - 48px);
+  overflow: auto;
 }

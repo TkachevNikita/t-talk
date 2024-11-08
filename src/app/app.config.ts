@@ -7,12 +7,14 @@ import { environment } from '../../environments/environment';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),

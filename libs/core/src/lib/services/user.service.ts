@@ -38,7 +38,6 @@ export class UserService {
               ? new UserModel({
                   uid: user?.uid,
                   ...docSnapshot.data(),
-                  birthDate: docSnapshot.data()['birthDate'].toDate(),
                 } as IUser)
               : null,
           ),
