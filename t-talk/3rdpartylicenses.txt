@@ -1,6 +1,6 @@
 
 --------------------------------------------------------------------------------
-Package: @taiga-ui/core
+Package: @taiga-ui/cdk
 License: "Apache-2.0"
 
                                  Apache License
@@ -195,7 +195,7 @@ License: "Apache-2.0"
    limitations under the License.
 
 --------------------------------------------------------------------------------
-Package: @taiga-ui/cdk
+Package: @taiga-ui/core
 License: "Apache-2.0"
 
                                  Apache License
