@@ -21,9 +21,10 @@
             tuiLike="var(--tui-status-negative)"
             type="checkbox"
             size="s"
-            [(ngModel)]="liked"
+            (click)="setLike()"
+            [formControl]="likeControl"
         />
-        <span class="post__actions--likes">5</span>
+        <span class="post__actions--likes">{{ post.likesCount }}</span>
     </div>
     <span class="divider"></span>
     <div class="post__comments">
