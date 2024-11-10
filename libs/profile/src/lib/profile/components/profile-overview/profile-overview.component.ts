@@ -61,7 +61,7 @@ export class ProfileOverviewComponent implements OnInit {
     this.user$ = this.activatedRoute.params.pipe(
       takeUntilDestroyed(this.destroyRef),
       switchMap((params: Params) => {
-        this.posts$ = this.postService.getPostsByUserId(params['id']);
+        this.posts$ = this.postService.getPosts(params['id']);
 
         return this.userService.isCurrentUserProfile(params['id']).pipe(
           switchMap((isCurrentUser: boolean) => {
@@ -77,12 +77,16 @@ export class ProfileOverviewComponent implements OnInit {
   }
 
   public createPost(authorId: string): void {
-    this.posts$ = this.postService.createPost({
-      authorId,
-      content: this.postControl.value,
-      createdAt: Timestamp.now(),
-      likesCount: 0,
-    });
-    this.postControl.reset();
+    this.postService
+      .createPost({
+        authorId,
+        content: this.postControl.value,
+        createdAt: Timestamp.now(),
+        likesCount: 0,
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.postControl.reset(),
+      });
   }
 }
