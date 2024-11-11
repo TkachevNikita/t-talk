@@ -6,7 +6,7 @@ export class PostModel {
   public readonly content: string;
   public readonly createdAt: Date;
   public readonly mediaIds?: string[];
-  public readonly likesCount: number;
+  public likesCount: number;
 
   constructor(post: IPost) {
     this.id = post.postId;

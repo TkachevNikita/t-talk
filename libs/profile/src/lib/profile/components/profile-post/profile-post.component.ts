@@ -87,11 +87,17 @@ export class ProfilePostComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap(() => this.likeControl.disable()),
-        switchMap(([user, liked]) =>
-          liked
-            ? this.likeService.removeLike(this.post.id!, user.uid!)
-            : this.likeService.setLike(this.post.id!, user.uid!),
-        ),
+        switchMap(([user, liked]) => {
+          if (liked) {
+            this.post.likesCount--;
+
+            return this.likeService.removeLike(this.post.id!, user.uid!);
+          }
+
+          this.post.likesCount++;
+
+          return this.likeService.setLike(this.post.id!, user.uid!);
+        }),
         switchMap(() => this.postService.getPosts(this.post.authorId)),
       )
       .subscribe({
