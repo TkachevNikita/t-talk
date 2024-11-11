@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { UserService } from '@t-talk/core';
 import { TuiRepeatTimes } from '@taiga-ui/cdk';
 import {
@@ -29,6 +29,7 @@ import {
   TuiTabs,
 } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
+import { EMPTY, switchMap, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -61,6 +62,7 @@ import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
 })
 export class ProfileComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
+  private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly router: Router = inject(Router);
 
@@ -69,11 +71,22 @@ export class ProfileComponent implements OnInit {
   protected switch = false;
 
   public ngOnInit(): void {
-    this.userService
-      .getUserData()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: async (user) => this.router.navigate([`/profile/${user?.uid}`]),
-      });
+    this.activatedRoute.params
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        switchMap((params) => {
+          if (params['id']) {
+            return this.userService.getUserData();
+          }
+
+          return this.userService.getUserData().pipe(
+            tap((user) => {
+              this.router.navigate([`/profile/${user?.uid}`]);
+            }),
+            switchMap(() => EMPTY),
+          );
+        }),
+      )
+      .subscribe();
   }
 }
