@@ -64,9 +64,7 @@ export class ProfilePostComponent implements OnInit {
   public liked$!: Observable<boolean>;
 
   public ngOnInit(): void {
-    this.user$ = this.userService
-      .getUserById(this.post.authorId)
-      .pipe(filter(Boolean));
+    this.user$ = this.userService.getUserData().pipe(filter(Boolean));
 
     this.liked$ = this.userService.getUserData().pipe(
       filter(Boolean),
