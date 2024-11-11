@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router, RouterOutlet } from '@angular/router';
+import { UserService } from '@t-talk/core';
 import { TuiRepeatTimes } from '@taiga-ui/cdk';
 import {
   TuiAppearance,
@@ -51,8 +59,21 @@ import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
   styleUrl: './profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
+  private readonly userService: UserService = inject(UserService);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly router: Router = inject(Router);
+
   protected expanded = true;
   protected open = false;
   protected switch = false;
+
+  public ngOnInit(): void {
+    this.userService
+      .getUserData()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: async (user) => this.router.navigate([`/profile/${user?.uid}`]),
+      });
+  }
 }

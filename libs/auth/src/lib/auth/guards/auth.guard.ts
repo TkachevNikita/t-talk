@@ -15,7 +15,7 @@ export const canActivateAuthRouteGuard: CanActivateFn = (): Observable<
   return user$.pipe(
     map((userData) => {
       if (userData) {
-        return router.parseUrl(`/profile/${userData.uid}`);
+        return true;
       }
 
       return router.parseUrl('/auth');
