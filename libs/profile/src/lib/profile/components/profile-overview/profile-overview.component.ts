@@ -48,7 +48,6 @@ export class ProfileOverviewComponent implements OnInit {
 
   protected isCurrentUser = false;
   protected posts$!: Observable<PostModel[]>;
-  protected isPostLoading$: Observable<boolean> = this.postService.isLoading;
   protected user$!: Observable<UserModel | null>;
   protected isUserLoading$: Observable<boolean> =
     this.userService.isUserLoading;
@@ -59,30 +58,35 @@ export class ProfileOverviewComponent implements OnInit {
   });
 
   public ngOnInit(): void {
-    this.activatedRoute.params
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (params: Params) => {
-          this.user$ = this.userService.isCurrentUserProfile(params['id']).pipe(
-            switchMap((isCurrentUser: boolean) => {
-              this.isCurrentUser = isCurrentUser;
-              this.posts$ = this.postService.getPostsByUserId(params['id']);
+    this.user$ = this.activatedRoute.params.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      switchMap((params: Params) => {
+        this.posts$ = this.postService.getPosts(params['id']);
 
-              return isCurrentUser
-                ? this.userService.getUserData()
-                : this.userService.getUserById(params['id']);
-            }),
-          );
-        },
-      });
+        return this.userService.isCurrentUserProfile(params['id']).pipe(
+          switchMap((isCurrentUser: boolean) => {
+            this.isCurrentUser = isCurrentUser;
+
+            return isCurrentUser
+              ? this.userService.getUserData()
+              : this.userService.getUserById(params['id']);
+          }),
+        );
+      }),
+    );
   }
 
   public createPost(authorId: string): void {
-    this.posts$ = this.postService.createPost({
-      authorId,
-      content: this.postControl.value,
-      createdAt: Timestamp.now(),
-    });
-    this.postControl.reset();
+    this.postService
+      .createPost({
+        authorId,
+        content: this.postControl.value,
+        createdAt: Timestamp.now(),
+        likesCount: 0,
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.postControl.reset(),
+      });
   }
 }

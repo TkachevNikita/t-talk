@@ -1,4 +1,5 @@
 export * from './lib/shared/enums/gender.enum';
+export * from './lib/shared/interfaces/like.interface';
 export * from './lib/shared/interfaces/post.interface';
 export * from './lib/shared/interfaces/user.interface';
 export * from './lib/shared/models/post.model';

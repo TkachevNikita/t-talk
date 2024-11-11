@@ -12,11 +12,15 @@ import {
 import { IPost, PostModel } from '@t-talk/shared';
 import {
   BehaviorSubject,
+  combineLatest,
   finalize,
   from,
   map,
   Observable,
+  ReplaySubject,
   switchMap,
+  take,
+  tap,
 } from 'rxjs';
 
 @Injectable()
@@ -26,18 +30,32 @@ export class PostService {
   private readonly isLoading$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  public get isLoading(): Observable<boolean> {
-    return this.isLoading$.asObservable();
+  private readonly postSubject$: ReplaySubject<PostModel[]> = new ReplaySubject<
+    PostModel[]
+  >(1);
+
+  public getPosts(userId: string): Observable<PostModel[]> {
+    return combineLatest([
+      this.postSubject$,
+      this.getPostsFromStore(userId).pipe(take(1)),
+    ]).pipe(
+      map(([localPosts, serverPosts]) =>
+        localPosts.length ? localPosts : serverPosts,
+      ),
+    );
   }
 
   public createPost(post: IPost): Observable<PostModel[]> {
     return from(addDoc(this.postCollection, post)).pipe(
-      map((dockRef) => dockRef.id),
-      switchMap(() => this.getPostsByUserId(post.authorId)),
+      switchMap(() =>
+        this.getPostsFromStore(post.authorId).pipe(
+          tap((posts) => this.postSubject$.next(posts)),
+        ),
+      ),
     );
   }
 
-  public getPostsByUserId(
+  private getPostsFromStore(
     userId: string,
     limitCount = 10,
   ): Observable<PostModel[]> {
@@ -56,6 +74,7 @@ export class PostService {
           (doc) => new PostModel({ postId: doc.id, ...doc.data() } as IPost),
         ),
       ),
+      tap((posts) => this.postSubject$.next(posts)),
       finalize(() => this.isLoading$.next(false)),
     );
   }

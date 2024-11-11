@@ -7,4 +7,5 @@ export interface IPost {
   content: string;
   createdAt: Timestamp;
   mediaIds?: string[];
+  likesCount: number;
 }
