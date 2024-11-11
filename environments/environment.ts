@@ -1,4 +1,4 @@
-export const enivronment = {
+export const environment = {
   apiKey: '',
   authDomain: '',
   projectId: '',
