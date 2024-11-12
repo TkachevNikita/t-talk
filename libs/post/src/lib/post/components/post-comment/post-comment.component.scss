@@ -1,0 +1,15 @@
+.comment {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__date {
+    float: right;
+    font-weight: 600;
+  }
+}

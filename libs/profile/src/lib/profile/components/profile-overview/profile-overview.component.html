@@ -77,16 +77,16 @@
                     @if (posts?.length === 0) {
                         <div class="profile__posts--empty">
                             <tui-icon
-                                    icon="@tui.gallery-vertical-end"
-                                    [style.font-size]="'48px'"
-                                    [style.font-weight]="'600'"
+                                icon="@tui.gallery-vertical-end"
+                                [style.font-size]="'48px'"
+                                [style.font-weight]="'600'"
                             />
                             На стене пока нет ни одной записи
                         </div>
                     }
 
-                    @for (post of posts; track $index) {
-                        <lib-profile-post [post]="post"/>
+                    @for (post of posts; track post.id) {
+                        <lib-post [post]="post" (removePost)="removePost($event)"/>
                     }
                 </div>
             </div>

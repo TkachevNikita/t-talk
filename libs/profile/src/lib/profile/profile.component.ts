@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { UserService } from '@t-talk/core';
+import { LikeService } from '@t-talk/core';
 import { TuiRepeatTimes } from '@taiga-ui/cdk';
 import {
   TuiAppearance,
@@ -29,7 +29,6 @@ import {
   TuiTabs,
 } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
-import { EMPTY, switchMap, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -59,9 +58,9 @@ import { EMPTY, switchMap, tap } from 'rxjs';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [LikeService],
 })
 export class ProfileComponent implements OnInit {
-  private readonly userService: UserService = inject(UserService);
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly router: Router = inject(Router);
@@ -71,22 +70,12 @@ export class ProfileComponent implements OnInit {
   protected switch = false;
 
   public ngOnInit(): void {
-    this.activatedRoute.params
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        switchMap((params) => {
-          if (params['id']) {
-            return this.userService.getUserData();
-          }
-
-          return this.userService.getUserData().pipe(
-            tap((user) => {
-              this.router.navigate([`/profile/${user?.uid}`]);
-            }),
-            switchMap(() => EMPTY),
-          );
-        }),
-      )
-      .subscribe();
+    this.activatedRoute.data
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data) => {
+        if (!this.activatedRoute.firstChild) {
+          this.router.navigate([`/profile/${data['userId']}`]);
+        }
+      });
   }
 }

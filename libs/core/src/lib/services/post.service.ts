@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   Firestore,
   getDocs,
   limit,
@@ -12,36 +14,40 @@ import {
 import { IPost, PostModel } from '@t-talk/shared';
 import {
   BehaviorSubject,
-  combineLatest,
   finalize,
   from,
   map,
   Observable,
   ReplaySubject,
+  shareReplay,
   switchMap,
-  take,
   tap,
 } from 'rxjs';
+
+import { CommentService } from './comment.service';
+import { LikeService } from './like.service';
 
 @Injectable()
 export class PostService {
   private readonly fireStore: Firestore = inject(Firestore);
   private readonly postCollection = collection(this.fireStore, 'posts');
+  private readonly likeService: LikeService = inject(LikeService);
+  private readonly commentService: CommentService = inject(CommentService);
   private readonly isLoading$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  private readonly postSubject$: ReplaySubject<PostModel[]> = new ReplaySubject<
-    PostModel[]
-  >(1);
+  private readonly postSubject$: ReplaySubject<void> = new ReplaySubject<void>(
+    1,
+  );
+
+  constructor() {
+    this.refreshData();
+  }
 
   public getPosts(userId: string): Observable<PostModel[]> {
-    return combineLatest([
-      this.postSubject$,
-      this.getPostsFromStore(userId).pipe(take(1)),
-    ]).pipe(
-      map(([localPosts, serverPosts]) =>
-        localPosts.length ? localPosts : serverPosts,
-      ),
+    return this.postSubject$.pipe(
+      switchMap(() => this.getPostsFromStore(userId)),
+      shareReplay({ bufferSize: 1, refCount: false }),
     );
   }
 
@@ -49,7 +55,24 @@ export class PostService {
     return from(addDoc(this.postCollection, post)).pipe(
       switchMap(() =>
         this.getPostsFromStore(post.authorId).pipe(
-          tap((posts) => this.postSubject$.next(posts)),
+          tap(() => this.refreshData()),
+        ),
+      ),
+    );
+  }
+
+  public deletePost(post: PostModel): Observable<PostModel[]> {
+    const postRef = doc(this.fireStore, `posts/${post.id}`);
+
+    return from(deleteDoc(postRef)).pipe(
+      switchMap(() =>
+        this.likeService.deleteLikesByPostId(post.id!).pipe(
+          switchMap(() => this.commentService.deleteCommentsByPostId(post.id!)),
+          switchMap(() =>
+            this.getPostsFromStore(post.authorId).pipe(
+              tap(() => this.refreshData()),
+            ),
+          ),
         ),
       ),
     );
@@ -74,8 +97,11 @@ export class PostService {
           (doc) => new PostModel({ postId: doc.id, ...doc.data() } as IPost),
         ),
       ),
-      tap((posts) => this.postSubject$.next(posts)),
       finalize(() => this.isLoading$.next(false)),
     );
+  }
+
+  private refreshData(): void {
+    return this.postSubject$.next();
   }
 }

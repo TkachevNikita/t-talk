@@ -63,6 +63,7 @@
     "@swc/helpers": "~0.5.11",
     "@taiga-ui/eslint-plugin-experience": "^0.204.0",
     "@types/jest": "^29.5.12",
+    "@types/node": "18.16.9",
     "angular-eslint": "^18.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.0.0",

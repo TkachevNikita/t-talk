@@ -9,8 +9,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
-import { PostService, UserService } from '@t-talk/core';
-import { ProfilePostComponent } from '@t-talk/profile';
+import { CommentService, PostService, UserService } from '@t-talk/core';
+import { PostComponent } from '@t-talk/post';
 import { PostModel, UserModel } from '@t-talk/shared';
 import { TuiLet } from '@taiga-ui/cdk';
 import { TuiButton, TuiIcon, TuiLoader } from '@taiga-ui/core';
@@ -25,7 +25,7 @@ import { Observable, switchMap } from 'rxjs';
   imports: [
     AsyncPipe,
     DatePipe,
-    ProfilePostComponent,
+    PostComponent,
     ReactiveFormsModule,
     TuiAvatar,
     TuiButton,
@@ -38,7 +38,7 @@ import { Observable, switchMap } from 'rxjs';
   templateUrl: './profile-overview.component.html',
   styleUrl: './profile-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PostService],
+  providers: [PostService, CommentService],
 })
 export class ProfileOverviewComponent implements OnInit {
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -88,5 +88,12 @@ export class ProfileOverviewComponent implements OnInit {
       .subscribe({
         next: () => this.postControl.reset(),
       });
+  }
+
+  public removePost(post: PostModel): void {
+    this.postService
+      .deletePost(post)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 }

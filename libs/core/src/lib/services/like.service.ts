@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import {
   collection,
+  deleteDoc,
   doc,
   Firestore,
   getDocs,
@@ -9,7 +10,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { ILike, IPost } from '@t-talk/shared';
-import { from, map, Observable } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
 
 @Injectable()
 export class LikeService {
@@ -68,5 +69,18 @@ export class LikeService {
     );
 
     return from(getDocs(likeQuery)).pipe(map((snapshot) => !snapshot.empty));
+  }
+
+  public deleteLikesByPostId(postId: string): Observable<void[]> {
+    const likesQuery = query(
+      this.likesCollection,
+      where('postId', '==', postId),
+    );
+
+    return from(getDocs(likesQuery)).pipe(
+      switchMap((snapshot) =>
+        from(Promise.all(snapshot.docs.map(async (doc) => deleteDoc(doc.ref)))),
+      ),
+    );
   }
 }

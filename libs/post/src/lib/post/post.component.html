@@ -1,0 +1,76 @@
+<div class="post" *tuiLet="user$ | async as user">
+    <div class="post__head">
+        <tui-avatar
+            size="m"
+            [src]="user?.profilePictureId"
+        />
+        <div class="post__head--info" *tuiLet="author$ | async as author">
+            <h3 class="post__head--title">
+                {{ author?.firstName }} {{ author?.secondName }}
+            </h3>
+            <p class="post__head--date">
+                {{post.createdAt | date: 'dd.MM.yyyy' }}
+            </p>
+            <div class="post__delete">
+            </div>
+        </div>
+        <div class="post__delete">
+            @if (user?.uid === post.authorId) {
+                <button
+                    iconStart="@tui.trash"
+                    tuiTooltip
+                    size="s"
+                    tuiIconButton
+                    type="button"
+                    [style.border-radius.%]="100"
+                    [style.background-color]="'#8B0000'"
+                    (click)="deletePost(post)"
+                ></button>
+            }
+        </div>
+    </div>
+    <div class="post__body">
+        {{post.content}}
+    </div>
+    <div class="post__actions">
+        <div class="post__actions--item">
+            <input
+                tuiLike="var(--tui-status-negative)"
+                type="checkbox"
+                size="s"
+                (click)="setLike()"
+                [formControl]="likeControl"
+            />
+            <span class="post__actions--likes">{{ post.likesCount }}</span>
+        </div>
+    </div>
+    <span class="divider"></span>
+    <div class="post__comments">
+        @for (comment of comments$ | async; track comment.id) {
+            <lib-post-comment [comment]="comment"/>
+            <span class="divider"></span>
+        }
+        <div class="post__comments--new">
+            <tui-avatar
+                size="s"
+                [src]="user?.profilePictureId"
+            />
+            <tui-input
+                [style.width]="'100%'"
+                [formControl]="commentControl"
+            >
+                Написать комментарий
+            </tui-input>
+            <button
+                iconStart="@tui.send"
+                tuiTooltip
+                size="m"
+                tuiIconButton
+                type="button"
+                [style.align-self]="'center'"
+                [disabled]="!commentControl.value || commentControl.disabled"
+                (click)="addComment()"
+            ></button>
+        </div>
+    </div>
+</div>

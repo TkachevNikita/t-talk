@@ -1,0 +1,13 @@
+<div class="comment" *tuiLet="user$ | async as user">
+    <tui-avatar
+        size="m"
+        [src]="user?.profilePictureId"
+    />
+    <div class="comment__body">
+        <h4 class="comment__name">
+            {{user?.firstName}} {{user?.secondName}}
+        </h4>
+        {{ comment.content }}
+        <p class="comment__date">{{ comment.createdAt | date: 'dd.MM.yyyy' }}</p>
+    </div>
+</div>
