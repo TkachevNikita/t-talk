@@ -1,10 +1,10 @@
 <div class="post" *tuiLet="user$ | async as user">
-    <div class="post__head">
+    <div class="post__head" *tuiLet="author$ | async as author">
         <tui-avatar
             size="m"
-            [src]="user?.profilePictureId"
+            [src]="author?.profilePictureId"
         />
-        <div class="post__head--info" *tuiLet="author$ | async as author">
+        <div class="post__head--info">
             <h3 class="post__head--title">
                 {{ author?.firstName }} {{ author?.secondName }}
             </h3>

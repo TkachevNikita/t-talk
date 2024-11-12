@@ -75,18 +75,26 @@ export class UserService {
   public getAllUsers(searchTerm?: string): Observable<UserModel[]> {
     const usersRef = collection(this.fireStore, 'users');
 
-    const usersQuery = query(
-      usersRef,
-      where('firstName', '>=', searchTerm),
-      where('firstName', '<=', `${searchTerm}\uF8FF`),
-    );
+    return this.user$.pipe(
+      switchMap((currentUser) => {
+        const usersQuery = searchTerm
+          ? query(
+              usersRef,
+              where('firstName', '>=', searchTerm),
+              where('firstName', '<=', `${searchTerm}\uF8FF`),
+            )
+          : usersRef;
 
-    return from(getDocs(usersQuery)).pipe(
-      map((querySnapshot) =>
-        querySnapshot.docs.map(
-          (doc) => new UserModel({ uid: doc.id, ...doc.data() } as IUser),
-        ),
-      ),
+        return from(getDocs(usersQuery)).pipe(
+          map((querySnapshot) =>
+            querySnapshot.docs
+              .map(
+                (doc) => new UserModel({ uid: doc.id, ...doc.data() } as IUser),
+              )
+              .filter((user) => user.uid !== currentUser?.uid),
+          ),
+        );
+      }),
     );
   }
 
