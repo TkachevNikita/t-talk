@@ -13,7 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   errorMatcher,
   Gender,
@@ -66,6 +66,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly router: Router = inject(Router);
 
   protected activeStepIndex = 0;
   protected readonly registerForm: FormGroup = new FormGroup({
@@ -106,7 +107,11 @@ export class RegisterComponent implements OnInit {
           this.registerForm.controls['birthDate'].value.toLocalNativeDate(),
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
+      .subscribe({
+        next: async () => {
+          await this.router.navigateByUrl('/profile');
+        },
+      });
   }
 
   protected nextStep(): void {
