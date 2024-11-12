@@ -7,7 +7,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { LikeService } from '@t-talk/core';
 import { TuiRepeatTimes } from '@taiga-ui/cdk';
 import {
@@ -35,6 +40,7 @@ import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
   selector: 'lib-profile',
   imports: [
     CommonModule,
+    RouterLink,
     RouterOutlet,
     TuiAppearance,
     TuiAvatar,

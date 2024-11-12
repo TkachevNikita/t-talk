@@ -1,6 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, user } from '@angular/fire/auth';
-import { doc, Firestore, getDoc } from '@angular/fire/firestore';
+import {
+  collection,
+  doc,
+  Firestore,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from '@angular/fire/firestore';
 import { IUser, UserModel } from '@t-talk/shared';
 import {
   BehaviorSubject,
@@ -61,6 +69,24 @@ export class UserService {
           : null,
       ),
       finalize(() => this.isUserLoading$.next(false)),
+    );
+  }
+
+  public getAllUsers(searchTerm?: string): Observable<UserModel[]> {
+    const usersRef = collection(this.fireStore, 'users');
+
+    const usersQuery = query(
+      usersRef,
+      where('firstName', '>=', searchTerm),
+      where('firstName', '<=', `${searchTerm}\uF8FF`),
+    );
+
+    return from(getDocs(usersQuery)).pipe(
+      map((querySnapshot) =>
+        querySnapshot.docs.map(
+          (doc) => new UserModel({ uid: doc.id, ...doc.data() } as IUser),
+        ),
+      ),
     );
   }
 

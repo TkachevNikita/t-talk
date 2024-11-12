@@ -12,6 +12,13 @@ export const profileRoutes: Route[] = [
     },
     children: [
       {
+        path: 'search',
+        loadComponent: async () =>
+          import('./components/profile-search/profile-search.component').then(
+            (m) => m.ProfileSearchComponent,
+          ),
+      },
+      {
         path: ':id',
         loadComponent: async () =>
           import(

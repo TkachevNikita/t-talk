@@ -1,0 +1,19 @@
+<div class="search">
+    <h2 class="search__title">
+        Поиск пользователей
+    </h2>
+    <tui-input
+        [style.align-self]="'flex-start'"
+        [style.width]="'300px'"
+        [style.margin-top]="'40px'"
+        tuiTextfieldIconLeft="@tui.search"
+        [formControl]="searchControl"
+    >
+        Введите имя пользователя
+    </tui-input>
+    <div class="search__list">
+        @for (user of users$ | async; track user.uid) {
+            <lib-profile-card [user]="user"/>
+        }
+    </div>
+</div>

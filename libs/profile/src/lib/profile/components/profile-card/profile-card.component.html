@@ -1,0 +1,27 @@
+<div class="profile">
+    <tui-avatar
+        size="xxl"
+        [src]="user.profilePictureId"
+        (click)="openProfile()"
+    />
+    <div class="profile__info">
+        <h3 class="profile__name">
+            {{user.firstName}} {{user.secondName}}
+        </h3>
+        <button
+            iconEnd="@tui.message-circle"
+            tuiLink
+            type="button"
+        >
+            Написать сообщение
+        </button>
+    </div>
+    <button
+        tuiButton
+        size="s"
+        type="button"
+        [style.margin-left]="'auto'"
+    >
+        Добавить в друзья
+    </button>
+</div>
