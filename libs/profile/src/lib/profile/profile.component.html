@@ -13,15 +13,28 @@
             Notifications
             <tui-badge-notification />
         </button>
-        <button
-            iconStart="@tui.ellipsis"
-            tuiIconButton
-            type="button"
-        >
-            More
-        </button>
         @if (user) {
-            <tui-avatar [src]="user.firstName[0] + user.secondName[0]" />
+            <tui-avatar
+                [tuiDropdown]="more"
+                tuiDropdownOpen
+                [src]="user.firstName[0] + user.secondName[0]"
+                [style.cursor]="'pointer'"
+            />
+            <ng-template
+                #more
+                let-close
+            >
+                <tui-data-list tuiDataListDropdownManager>
+                    <button
+                        tuiOption
+                        type="button"
+                        size="xs"
+                        (click)="logout()"
+                    >
+                        Выйти
+                    </button>
+                </tui-data-list>
+            </ng-template>
         }
     </header>
     <div [style.display]="'flex'" [style.height]="'100%'">

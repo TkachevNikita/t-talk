@@ -12,11 +12,15 @@ import {
 import { IUser, UserModel } from '@t-talk/shared';
 import {
   BehaviorSubject,
+  filter,
   finalize,
   from,
   map,
   Observable,
+  ReplaySubject,
+  shareReplay,
   switchMap,
+  take,
 } from 'rxjs';
 
 @Injectable({
@@ -29,38 +33,29 @@ export class UserService {
   private readonly isUserLoading$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  private readonly userSubject$: ReplaySubject<void> = new ReplaySubject<void>(
+    1,
+  );
+
+  constructor() {
+    this.userSubject$.next();
+  }
+
+  public get currentUser(): Observable<UserModel> {
+    return this.userSubject$.pipe(
+      take(1),
+      switchMap(() => this.getUserData()),
+      shareReplay({ bufferSize: 1, refCount: false }),
+      filter(Boolean),
+    );
+  }
+
   public get isUserLoading(): Observable<boolean> {
     return this.isUserLoading$.asObservable();
   }
 
-  public getUserData(): Observable<UserModel | null> {
-    this.isUserLoading$.next(true);
-
-    return this.user$.pipe(
-      switchMap((user) => {
-        const userRef = doc(this.fireStore, `users/${user?.uid}`);
-
-        return from(getDoc(userRef)).pipe(
-          map((docSnapshot) =>
-            docSnapshot.exists()
-              ? new UserModel({
-                  uid: user?.uid,
-                  ...docSnapshot.data(),
-                } as IUser)
-              : null,
-          ),
-          finalize(() => {
-            this.isUserLoading$.next(false);
-          }),
-        );
-      }),
-    );
-  }
-
   public getUserById(userId: string): Observable<UserModel | null> {
     const userRef = doc(this.fireStore, `users/${userId}`);
-
-    this.isUserLoading$.next(true);
 
     return from(getDoc(userRef)).pipe(
       map((docSnapshot) =>
@@ -68,7 +63,6 @@ export class UserService {
           ? new UserModel({ uid: userId, ...docSnapshot.data() } as IUser)
           : null,
       ),
-      finalize(() => this.isUserLoading$.next(false)),
     );
   }
 
@@ -99,8 +93,33 @@ export class UserService {
   }
 
   public isCurrentUserProfile(profileId: string): Observable<boolean> {
-    return this.getUserData().pipe(
+    return this.currentUser.pipe(
       map((currentUser) => currentUser?.uid === profileId),
+    );
+  }
+
+  private getUserData(): Observable<UserModel | null> {
+    this.isUserLoading$.next(true);
+
+    return this.user$.pipe(
+      switchMap((user) => {
+        const userRef = doc(this.fireStore, `users/${user?.uid}`);
+
+        return from(getDoc(userRef)).pipe(
+          map((docSnapshot) =>
+            docSnapshot.exists()
+              ? new UserModel({
+                  uid: user?.uid,
+                  ...docSnapshot.data(),
+                } as IUser)
+              : null,
+          ),
+          finalize(() => {
+            this.isUserLoading$.next(false);
+            this.userSubject$.next();
+          }),
+        );
+      }),
     );
   }
 }

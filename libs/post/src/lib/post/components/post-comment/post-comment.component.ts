@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +15,7 @@ import { filter, Observable } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'lib-post-comment',
-  imports: [AsyncPipe, DatePipe, TuiAvatar, TuiLet],
+  imports: [AsyncPipe, DatePipe, JsonPipe, TuiAvatar, TuiLet],
   templateUrl: './post-comment.component.html',
   styleUrl: './post-comment.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
