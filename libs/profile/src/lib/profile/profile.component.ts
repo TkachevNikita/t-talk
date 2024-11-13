@@ -13,8 +13,9 @@ import {
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
-import { LikeService } from '@t-talk/core';
-import { TuiRepeatTimes } from '@taiga-ui/cdk';
+import { LikeService, UserService } from '@t-talk/core';
+import { UserModel } from '@t-talk/shared';
+import { TuiLet, TuiRepeatTimes } from '@taiga-ui/cdk';
 import {
   TuiAppearance,
   TuiButton,
@@ -34,6 +35,7 @@ import {
   TuiTabs,
 } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
+import { filter, Observable } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -55,6 +57,7 @@ import { TuiCardLarge, TuiHeader, TuiNavigation } from '@taiga-ui/layout';
     TuiFade,
     TuiHeader,
     TuiIcon,
+    TuiLet,
     TuiNavigation,
     TuiRepeatTimes,
     TuiSwitch,
@@ -70,12 +73,15 @@ export class ProfileComponent implements OnInit {
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly router: Router = inject(Router);
+  private readonly userService: UserService = inject(UserService);
 
+  protected user$!: Observable<UserModel>;
   protected expanded = true;
   protected open = false;
   protected switch = false;
 
   public ngOnInit(): void {
+    this.user$ = this.userService.getUserData().pipe(filter(Boolean));
     this.activatedRoute.data
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
