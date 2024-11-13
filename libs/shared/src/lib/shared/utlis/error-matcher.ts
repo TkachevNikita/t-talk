@@ -25,10 +25,16 @@ export const errorMatcher = (
     return new TuiValidationError(`Максимальное значение: ${max}`);
   }
 
-  if (control.hasError('maxLength')) {
+  if (control.hasError('maxlength')) {
     const maxLength = control.getError('maxlength').requiredLength;
 
     return new TuiValidationError(`Максимальная длина: ${maxLength} символов`);
+  }
+
+  if (control.hasError('minlength')) {
+    const minLength = control.getError('minlength').requiredLength;
+
+    return new TuiValidationError(`Минимальная длина: ${minLength} символов`);
   }
 
   if (control.hasError('lettersOnly')) {

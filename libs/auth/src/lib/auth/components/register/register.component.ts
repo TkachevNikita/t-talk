@@ -13,7 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   errorMatcher,
   Gender,
@@ -66,22 +66,26 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly router: Router = inject(Router);
 
   protected activeStepIndex = 0;
   protected readonly registerForm: FormGroup = new FormGroup({
     firstName: new FormControl<string>('', [
       Validators.required,
+      Validators.minLength(2),
       lettersOnlyValidator(),
     ]),
     secondName: new FormControl<string>('', [
       Validators.required,
+      Validators.minLength(2),
       lettersOnlyValidator(),
     ]),
     gender: new FormControl<Gender | null>(null, Validators.required),
     birthDate: new FormControl<TuiDay | null>(null, Validators.required),
-    email: new FormControl<string>('', Validators.required),
-    password: new FormControl<string>('', Validators.required),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    password: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
     repeatPassword: new FormControl<string>('', [
       Validators.required,
       matchPasswordValidator,
@@ -100,18 +104,17 @@ export class RegisterComponent implements OnInit {
   }
 
   protected register(): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { repeatPassword, ...formData } = this.registerForm.value;
+
     this.authService
       .register({
-        ...this.registerForm.value,
+        ...formData,
         birthDate:
           this.registerForm.controls['birthDate'].value.toLocalNativeDate(),
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: async () => {
-          await this.router.navigateByUrl('/profile');
-        },
-      });
+      .subscribe();
   }
 
   protected nextStep(): void {

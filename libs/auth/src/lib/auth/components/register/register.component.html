@@ -19,6 +19,10 @@
         stepState="normal"
         tuiStep
         type="button"
+        [disabled]="registerForm.controls['firstName'].invalid ||
+            registerForm.controls['secondName'].invalid ||
+            registerForm.controls['birthDate'].invalid ||
+            registerForm.controls['gender'].invalid"
       >
         Завершение
       </button>
@@ -92,6 +96,10 @@
           tuiButton
           type="button"
           (click)="nextStep()"
+          [disabled]="registerForm.controls['firstName'].invalid ||
+            registerForm.controls['secondName'].invalid ||
+            registerForm.controls['birthDate'].invalid ||
+            registerForm.controls['gender'].invalid"
         >
           Далее
           <tui-icon
@@ -108,20 +116,25 @@
         >
           Введите email
         </tui-input>
-        <tui-textfield>
-          <label tuiLabel>Введите пароль</label>
-          <input
-              formControlName="password"
-              placeholder="Повторите пароль"
-              tuiTextfield
-              type="password"
-          />
-          <tui-icon tuiPassword />
-        </tui-textfield>
+          <div class="register__form--control">
+              <tui-textfield>
+                  <label tuiLabel>Введите пароль</label>
+                  <input
+                      autocomplete="new-password"
+                      formControlName="password"
+                      placeholder="Введите пароль"
+                      tuiTextfield
+                      type="password"
+                  />
+                  <tui-icon tuiPassword />
+              </tui-textfield>
+              <tui-error [error]="computeError('password')"/>
+          </div>
         <div class="register__form--control">
             <tui-textfield>
                 <label tuiLabel>Повторите пароль</label>
                 <input
+                    autocomplete="new-password"
                     formControlName="repeatPassword"
                     placeholder="Повторите пароль"
                     tuiTextfield

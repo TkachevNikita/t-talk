@@ -11,7 +11,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TuiButton, TuiIcon, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiChip, TuiComment, TuiPassword } from '@taiga-ui/kit';
 import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
@@ -40,7 +40,6 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
   private readonly authService: AuthService = inject(AuthService);
-  private readonly router: Router = inject(Router);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   protected readonly loginForm = new FormGroup({
@@ -55,8 +54,6 @@ export class LoginComponent {
         this.loginForm.controls.password.value!,
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(async (userCred) =>
-        this.router.navigate([`/profile/${userCred.user.uid}`]),
-      );
+      .subscribe();
   }
 }
