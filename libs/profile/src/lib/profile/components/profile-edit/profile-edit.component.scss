@@ -1,0 +1,28 @@
+:host {
+  width: 100%;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 400px;
+
+    &--group {
+      display: flex;
+      gap: 10px;
+    }
+
+    &--gender {
+      width: 100%;
+    }
+  }
+}
+

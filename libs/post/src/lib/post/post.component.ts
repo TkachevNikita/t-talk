@@ -112,7 +112,6 @@ export class PostComponent implements OnInit {
     this.author$ = this.userService
       .getUserById(this.post.authorId)
       .pipe(filter(Boolean));
-
     this.liked$ = this.user$.pipe(
       takeUntilDestroyed(this.destroyRef),
       filter(Boolean),

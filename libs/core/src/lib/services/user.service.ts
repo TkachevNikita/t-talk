@@ -7,8 +7,17 @@ import {
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from '@angular/fire/firestore';
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  listAll,
+  ref,
+  uploadBytes,
+} from '@angular/fire/storage';
 import { IUser, UserModel } from '@t-talk/shared';
 import {
   BehaviorSubject,
@@ -95,6 +104,48 @@ export class UserService {
   public isCurrentUserProfile(profileId: string): Observable<boolean> {
     return this.currentUser.pipe(
       map((currentUser) => currentUser?.uid === profileId),
+    );
+  }
+
+  public updateUser(
+    userId: string,
+    userData: Partial<IUser>,
+  ): Observable<void> {
+    this.isUserLoading$.next(true);
+    const userRef = doc(this.fireStore, `users/${userId}`);
+
+    return from(updateDoc(userRef, userData)).pipe(
+      finalize(() => {
+        this.userSubject$.next();
+        this.isUserLoading$.next(false);
+      }),
+    );
+  }
+
+  public updateUserProfilePicture(
+    userId: string,
+    file: File,
+  ): Observable<void> {
+    this.isUserLoading$.next(true);
+    const storage = getStorage();
+    const folderRef = ref(storage, `profilePictures/${userId}`);
+    const fileRef = ref(storage, `profilePictures/${userId}/${file.name}`);
+
+    return from(listAll(folderRef)).pipe(
+      switchMap((listResult) =>
+        from(
+          Promise.all(listResult.items.map(async (item) => deleteObject(item))),
+        ),
+      ),
+      switchMap(() => from(uploadBytes(fileRef, file))),
+      switchMap(() => from(getDownloadURL(fileRef))),
+      switchMap((downloadUrl) =>
+        this.updateUser(userId, { profilePictureId: downloadUrl }),
+      ),
+      finalize(() => {
+        this.isUserLoading$.next(false);
+        this.userSubject$.next();
+      }),
     );
   }
 

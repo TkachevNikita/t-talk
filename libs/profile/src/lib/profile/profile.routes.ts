@@ -19,6 +19,13 @@ export const profileRoutes: Route[] = [
           ),
       },
       {
+        path: 'edit',
+        loadComponent: async () =>
+          import('./components/profile-edit/profile-edit.component').then(
+            (m) => m.ProfileEditComponent,
+          ),
+      },
+      {
         path: ':id',
         loadComponent: async () =>
           import(

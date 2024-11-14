@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { CommentService, PostService, UserService } from '@t-talk/core';
 import { PostComponent } from '@t-talk/post';
 import { PostModel, UserModel } from '@t-talk/shared';
@@ -27,6 +27,7 @@ import { Observable, switchMap } from 'rxjs';
     DatePipe,
     PostComponent,
     ReactiveFormsModule,
+    RouterLink,
     TuiAvatar,
     TuiButton,
     TuiIcon,
