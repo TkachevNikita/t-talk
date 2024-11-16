@@ -107,9 +107,9 @@ export class ProfileEditComponent implements OnInit {
         this.profileForm.patchValue({
           ...user,
           birthDate: new TuiDay(
-            user.birthDate?.getUTCFullYear() as number,
-            user.birthDate?.getMonth() as number,
-            user.birthDate?.getDay() as number,
+            new Date(user.birthDate!).getFullYear(),
+            new Date(user.birthDate!).getMonth(),
+            new Date(user.birthDate!).getDate(),
           ),
         });
       },
@@ -138,10 +138,12 @@ export class ProfileEditComponent implements OnInit {
           const avatar = this.profileForm.controls['avatar'].value;
           // eslint-disable-next-line @typescript-eslint/no-unused-vars,sonarjs/sonar-no-unused-vars
           const { avatar: _, ...profileFormValue } = this.profileForm.value;
+          const birthDate: TuiDay =
+            this.profileForm.controls['birthDate'].value;
 
           const profileData: Partial<IUser> = {
             ...profileFormValue,
-            birthDate: new Date(this.profileForm.controls['birthDate'].value),
+            birthDate: new Date(birthDate.year, birthDate.month, birthDate.day),
           };
 
           if (avatar) {
