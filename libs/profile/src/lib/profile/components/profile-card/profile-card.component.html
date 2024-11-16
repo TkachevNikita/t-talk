@@ -16,12 +16,15 @@
             Написать сообщение
         </button>
     </div>
-    <button
-        tuiButton
-        size="s"
-        type="button"
-        [style.margin-left]="'auto'"
-    >
-        Добавить в друзья
-    </button>
+    @if ((currentUser$ | async)?.uid !== user.uid) {
+        <button
+            tuiButton
+            size="s"
+            type="button"
+            [style.margin-left]="'auto'"
+            (click)="toggleFollow()"
+        >
+            {{ (isFollowing$ | async) ? 'Отписаться' : 'Подписаться'}}
+        </button>
+    }
 </div>

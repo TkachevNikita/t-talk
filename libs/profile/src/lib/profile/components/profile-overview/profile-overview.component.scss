@@ -47,6 +47,24 @@
   &__subs {
     width: 30%;
     height: 200px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+
+    &--item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      background: #ffffff;
+      -webkit-box-shadow: 0 0 8px 0 rgba(34, 60, 80, 0.2);
+      -moz-box-shadow: 0 0 8px 0 rgba(34, 60, 80, 0.2);
+      box-shadow: 0 0 8px 0 rgba(34, 60, 80, 0.2);
+      cursor: pointer;
+    }
   }
 
   &__posts {
@@ -82,4 +100,13 @@
     display: flex;
     gap: 40px;
   }
+}
+
+.sub-dialog {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 400px;
+  overflow: auto;
 }

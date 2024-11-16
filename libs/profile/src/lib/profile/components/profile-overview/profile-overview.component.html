@@ -91,11 +91,49 @@
                     }
                 </div>
             </div>
-            <div class="profile__subs profile-block">
-                <h2>Подписки</h2>
-                <div class="profile__subs--list">
+            <div class="profile__subs">
+                <button
+                    type="button"
+                    class="profile__subs--item"
+                    *tuiLet="followers$ | async as followers"
+                    (click)="openFollowers()"
+                >
+                    <h4>Подписчики</h4>
+                    {{followers?.length || 0}}
+                    <ng-template
+                        let-observer
+                        [tuiDialogOptions]="{label: 'Подписчики', size: 'l'}"
+                        [(tuiDialog)]="followersOpen"
+                    >
+                        <div class="sub-dialog">
+                            @for (follower of followers; track follower.uid) {
+                                <lib-profile-card [user]="follower"  />
+                            }
+                        </div>
 
-                </div>
+                    </ng-template>
+                </button>
+                <button
+                    type="button"
+                    class="profile__subs--item"
+                    (click)="openFollowing()"
+                    *tuiLet="followings$ | async as followings"
+                >
+                    <h4>Подписки</h4>
+                    {{ followings?.length || 0 }}
+                    <ng-template
+                        let-observer
+                        [tuiDialogOptions]="{label: 'Подписки', size: 'l'}"
+                        [(tuiDialog)]="followingOpen"
+                    >
+                        <div class="sub-dialog">
+                            @for (following of followings; track following.uid) {
+                                <lib-profile-card [user]="following"  />
+                            }
+                        </div>
+
+                    </ng-template>
+                </button>
             </div>
         </div>
     </div>
