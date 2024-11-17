@@ -9,7 +9,7 @@ cache:
     - node_modules/
 
 before_script:
-  - npm install -g @angular/cli firebase-tools
+  - npm install -g nx firebase-tools
 
 build:
   stage: build
