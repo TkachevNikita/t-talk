@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { UserService } from '@t-talk/core';
 import { UserModel } from '@t-talk/shared';
+import { TuiLet } from '@taiga-ui/cdk';
 import { TuiButton, TuiLink } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
@@ -20,7 +21,7 @@ import { FollowerService } from '../../../../../../core/src/lib/services/followe
 @Component({
   standalone: true,
   selector: 'lib-profile-card',
-  imports: [AsyncPipe, TuiAvatar, TuiButton, TuiLink],
+  imports: [AsyncPipe, TuiAvatar, TuiButton, TuiLet, TuiLink],
   templateUrl: './profile-card.component.html',
   styleUrls: ['./profile-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,11 +56,15 @@ export class ProfileCardComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
         switchMap((currentUser) => {
           if (this.isFollowing$.value) {
+            this.isFollowing$.next(false);
+
             return this.followerService.unfollowUser(
               currentUser.uid!,
               this.user.uid!,
             );
           }
+
+          this.isFollowing$.next(true);
 
           return this.followerService.followUser(
             currentUser.uid!,
@@ -67,9 +72,7 @@ export class ProfileCardComponent implements OnInit {
           );
         }),
       )
-      .subscribe(() => {
-        this.isFollowing$.next(!this.isFollowing$.value);
-      });
+      .subscribe();
   }
 
   private checkFollowingStatus(): void {

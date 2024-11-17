@@ -18,13 +18,15 @@
     </div>
     @if ((currentUser$ | async)?.uid !== user.uid) {
         <button
+            *tuiLet="isFollowing$ | async as isFollowing"
             tuiButton
             size="s"
             type="button"
             [style.margin-left]="'auto'"
+            [style.background-color]="isFollowing ? 'red' : '#526ed3'"
             (click)="toggleFollow()"
         >
-            {{ (isFollowing$ | async) ? 'Отписаться' : 'Подписаться'}}
+            {{ isFollowing ? 'Отписаться' : 'Подписаться'}}
         </button>
     }
 </div>
