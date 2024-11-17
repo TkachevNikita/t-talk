@@ -11,3 +11,9 @@
   height: calc(100vh - 48px);
   overflow: auto;
 }
+
+@media (max-width: 444px) {
+  .main {
+    padding: 10px;
+  }
+}

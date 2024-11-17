@@ -81,7 +81,7 @@ export class ProfileComponent implements OnInit {
     inject(NotificationService);
 
   protected user$!: Observable<UserModel>;
-  protected expanded = true;
+  protected expanded = false;
   protected open = false;
   protected switch = false;
 

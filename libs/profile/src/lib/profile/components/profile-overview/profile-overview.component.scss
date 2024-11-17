@@ -16,6 +16,10 @@
     padding: 30px;
   }
 
+  &__edit {
+    margin-left: auto;
+    align-self: flex-start;
+  }
 
   &__avatar {
     width: 300px;
@@ -109,4 +113,57 @@
   gap: 10px;
   height: 400px;
   overflow: auto;
+}
+
+@media (max-width: 1000px) {
+  .profile {
+    &__avatar {
+      width: 100%;
+      height: auto;
+    }
+
+    &__head {
+      flex-direction: column;
+    }
+
+    &__info {
+      width: auto;
+    }
+
+    &__body {
+      flex-direction: column-reverse;
+    }
+
+    &__subs {
+      width: 100%;
+      height: auto;
+      justify-content: center;
+      flex-direction: row;
+    }
+
+    &__edit {
+      margin-left: 0;
+      align-self: center;
+    }
+  }
+}
+
+@media (max-width: 680px) {
+  .profile {
+    &__edit {
+      width: 100%;
+    }
+
+    &__subs {
+      &--item {
+        width: 100%;
+      }
+    }
+
+    &__posts {
+      &--list {
+        padding: 0;
+      }
+    }
+  }
 }

@@ -1,4 +1,13 @@
+:host {
+  width: 100%;
+}
+
 .register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -46,5 +55,16 @@
 
   &__stepper {
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 440px) {
+  .register {
+    width: 100%;
+    padding: 0 10px;
+
+    &__form {
+      width: 100%;
+    }
   }
 }
