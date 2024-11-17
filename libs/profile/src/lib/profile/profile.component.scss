@@ -12,6 +12,12 @@
   overflow: auto;
 }
 
+@media (max-width: 610px) {
+  .aside-btn {
+    display: none;
+  }
+}
+
 @media (max-width: 444px) {
   .main {
     padding: 10px;
