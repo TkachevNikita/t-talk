@@ -1,1 +1,0 @@
-import{a,b}from"./chunk-P45UUXAZ.js";import"./chunk-WC7EZEDK.js";import"./chunk-E67NBLGM.js";import"./chunk-EJKABHH5.js";import"./chunk-3MBWBGZJ.js";import"./chunk-P3GOYCFD.js";import"./chunk-KF5DOTIP.js";import"./chunk-DCUJG46Q.js";import"./chunk-4U6SADK7.js";import"./chunk-F7MKHF77.js";export{a as ProfileComponent,b as profileRoutes};
