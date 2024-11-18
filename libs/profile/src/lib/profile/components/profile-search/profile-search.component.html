@@ -12,6 +12,9 @@
         Введите имя пользователя
     </tui-input>
     <div class="search__list">
+        @if (usersLoading$ | async) {
+            <tui-loader />
+        }
         @for (user of users$ | async; track user.uid) {
             <lib-profile-card [user]="user"/>
         }

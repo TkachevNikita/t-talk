@@ -40,6 +40,9 @@ export class UserService {
   private readonly isUserLoading$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  private readonly usersLoading$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
   private readonly userSubject$: ReplaySubject<void> = new ReplaySubject<void>(
     1,
   );
@@ -55,6 +58,10 @@ export class UserService {
       shareReplay({ bufferSize: 1, refCount: false }),
       filter(Boolean),
     );
+  }
+
+  public get isUsersListLoading(): Observable<boolean> {
+    return this.usersLoading$.asObservable();
   }
 
   public get isUserLoading(): Observable<boolean> {
@@ -75,6 +82,8 @@ export class UserService {
 
   public getAllUsers(searchTerm?: string): Observable<UserModel[]> {
     const usersRef = collection(this.fireStore, 'users');
+
+    this.usersLoading$.next(true);
 
     return this.user$.pipe(
       switchMap((currentUser) =>
@@ -97,6 +106,9 @@ export class UserService {
                 return fullName.includes(lowerCaseSearchTerm);
               }),
           ),
+          finalize(() => {
+            this.usersLoading$.next(false);
+          }),
         ),
       ),
     );
