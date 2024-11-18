@@ -22,6 +22,9 @@ install:
       echo "  appId: '$FIREBASE_APP_ID'," >> environments/environment.ts
       echo "  measurementId: '$FIREBASE_MEASUREMENT_ID'" >> environments/environment.ts
       echo "};" >> environments/environment.ts
+  artifacts:
+    paths:
+      - node_modules/
 
 build:
   stage: build
