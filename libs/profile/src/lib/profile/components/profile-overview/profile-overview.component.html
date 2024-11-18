@@ -57,6 +57,7 @@
                         <tui-textarea
                             [formControl]="postControl"
                             [style.width]="'100%'"
+                            [maxLength]="300"
                         >
                             Что у вас нового?
                         </tui-textarea>
@@ -67,7 +68,7 @@
                         type="button"
                         [style.align-self]="'flex-end'"
                         [style.margin-top]="'20px'"
-                        [disabled]="postControl.invalid"
+                        [disabled]="!postControl.value || postControl.value.length >= 300"
                         (click)="createPost(user!.uid!)"
                     >
                         Отправить

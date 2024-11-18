@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { CommentService, PostService, UserService } from '@t-talk/core';
 import { PostComponent } from '@t-talk/post';
@@ -68,7 +68,6 @@ export class ProfileOverviewComponent implements OnInit {
 
   protected postControl: FormControl<string> = new FormControl<string>('', {
     nonNullable: true,
-    validators: [Validators.required],
   });
 
   public ngOnInit(): void {
