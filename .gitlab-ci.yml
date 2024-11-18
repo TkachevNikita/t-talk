@@ -21,7 +21,7 @@ deploy:
   only:
     - staging
   script:
-    - firebase deploy --only hosting --token $FIREBASE_AUTH_TOKEN
+    - firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --token $FIREBASE_AUTH_TOKEN
   environment:
     name: production
     url: https://t-talk-23d6c.web.app/
