@@ -14,7 +14,7 @@ build:
     - npm run build
   artifacts:
     paths:
-      - dist/
+      - dist/t-talk/browser/
 
 deploy:
   stage: deploy
