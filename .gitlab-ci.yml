@@ -1,16 +1,31 @@
 image: node:20
 
 stages:
+  - install deps
   - build
   - deploy
 
 before_script:
   - npm install -g firebase-tools
 
+install:
+  stage: install deps
+  script:
+    - npm install
+    - |
+      echo "export const environment = {" > environments/environment.ts
+      echo "  apiKey: '$FIREBASE_API_KEY'," >> environments/environment.ts
+      echo "  authDomain: '$FIREBASE_AUTH_DOMAIN'," >> environments/environment.ts
+      echo "  projectId: '$FIREBASE_PROJECT_ID'," >> environments/environment.ts
+      echo "  storageBucket: '$FIREBASE_STORAGE_BUCKET'," >> environments/environment.ts
+      echo "  messagingSenderId: '$FIREBASE_MESSAGING_SENDER_ID'," >> environments/environment.ts
+      echo "  appId: '$FIREBASE_APP_ID'," >> environments/environment.ts
+      echo "  measurementId: '$FIREBASE_MEASUREMENT_ID'" >> environments/environment.ts
+      echo "};" >> environments/environment.ts
+
 build:
   stage: build
   script:
-    - npm install
     - npm run build
   artifacts:
     paths:
