@@ -21,7 +21,7 @@ export class AuthService implements IAuthService {
 
   public register(user: IUser): Observable<void> {
     return from(
-      createUserWithEmailAndPassword(this.fireAuth, user.email, user.password),
+      createUserWithEmailAndPassword(this.fireAuth, user.email, user.password!),
     ).pipe(
       switchMap((userCred) => {
         const userRef = doc(this.fireStore, `users/${userCred.user.uid}`);

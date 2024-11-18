@@ -11,7 +11,5 @@ export interface IUser {
   firstName: string;
   secondName: string;
   gender: number;
-  password: string;
-  friends: string[];
-  conversations: string[];
+  password?: string;
 }
