@@ -1,6 +1,7 @@
 export default {
   displayName: 't-talk',
   preset: './jest.preset.js',
+  jestEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: './coverage/t-talk',
   transform: {
@@ -21,5 +22,7 @@ export default {
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
     '<rootDir>/src/**/*(*.)@(spec|test).[jt]s?(x)',
+    '<rootDir>/libs/**/__tests__/**/*.[jt]s?(x)',
+    '<rootDir>/libs/**/*(*.)@(spec|test).[jt]s?(x)',
   ],
 };

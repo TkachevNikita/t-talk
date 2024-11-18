@@ -16,7 +16,7 @@ describe('AuthComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('компонент должен быть создан', () => {
     expect(component).toBeTruthy();
   });
 });

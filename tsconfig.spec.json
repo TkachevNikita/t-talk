@@ -9,8 +9,13 @@
   "files": ["src/test-setup.ts"],
   "include": [
     "jest.config.ts",
+    "jest.polyfills.js",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "libs/**/*.test.ts",
+    "libs/**/*.spec.ts",
+    "libs/**/*.d.ts",
+    "libs/**/*.config.ts"
   ]
 }

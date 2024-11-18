@@ -1,6 +1,7 @@
 export default {
   displayName: 'auth',
   preset: '../../jest.preset.js',
+  testEnvironment: 'jest-fixed-jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../coverage/libs/auth',
   transform: {
