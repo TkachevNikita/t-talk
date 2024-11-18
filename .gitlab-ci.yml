@@ -4,14 +4,10 @@ stages:
   - install deps
   - build
   - deploy
-
-before_script:
-  - npm install -g firebase-tools
-
-install:
-  stage: install deps
-  script:
-    - npm install
+build:
+  stage: build
+  before_script:
+    - npm install -g firebase-tools
     - |
       echo "export const environment = {" > environments/environment.ts
       echo "  apiKey: '$FIREBASE_API_KEY'," >> environments/environment.ts
@@ -22,14 +18,8 @@ install:
       echo "  appId: '$FIREBASE_APP_ID'," >> environments/environment.ts
       echo "  measurementId: '$FIREBASE_MEASUREMENT_ID'" >> environments/environment.ts
       echo "};" >> environments/environment.ts
-  artifacts:
-    paths:
-      - node_modules/
-      - environments/
-
-build:
-  stage: build
   script:
+    - npm install
     - npm run build
   artifacts:
     paths:
