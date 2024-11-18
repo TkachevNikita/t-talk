@@ -6,9 +6,7 @@ import {
   Firestore,
   getDoc,
   getDocs,
-  query,
   updateDoc,
-  where,
 } from '@angular/fire/firestore';
 import {
   deleteObject,
@@ -79,25 +77,28 @@ export class UserService {
     const usersRef = collection(this.fireStore, 'users');
 
     return this.user$.pipe(
-      switchMap((currentUser) => {
-        const usersQuery = searchTerm
-          ? query(
-              usersRef,
-              where('firstName', '>=', searchTerm),
-              where('firstName', '<=', `${searchTerm}\uF8FF`),
-            )
-          : usersRef;
-
-        return from(getDocs(usersQuery)).pipe(
+      switchMap((currentUser) =>
+        from(getDocs(usersRef)).pipe(
           map((querySnapshot) =>
             querySnapshot.docs
               .map(
                 (doc) => new UserModel({ uid: doc.id, ...doc.data() } as IUser),
               )
-              .filter((user) => user.uid !== currentUser?.uid),
+              .filter((user) => user.uid !== currentUser?.uid)
+              .filter((user: UserModel) => {
+                if (!searchTerm) {
+                  return true;
+                }
+
+                const lowerCaseSearchTerm = searchTerm.toLowerCase();
+                const fullName =
+                  `${user.firstName} ${user.secondName}`.toLowerCase();
+
+                return fullName.includes(lowerCaseSearchTerm);
+              }),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 
