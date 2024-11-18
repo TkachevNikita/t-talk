@@ -1,6 +1,6 @@
 {
     "hosting": {
-      "public": "dist/t-talk",
+      "public": "dist/t-talk/browser",
       "rewrites": [
         {
           "source": "**",
