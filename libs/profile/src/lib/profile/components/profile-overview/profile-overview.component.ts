@@ -14,7 +14,13 @@ import { PostComponent } from '@t-talk/post';
 import { ProfileComponent } from '@t-talk/profile';
 import { PostModel, UserModel } from '@t-talk/shared';
 import { TuiLet } from '@taiga-ui/cdk';
-import { TuiButton, TuiDialog, TuiIcon, TuiLoader } from '@taiga-ui/core';
+import {
+  TuiButton,
+  TuiDialog,
+  TuiIcon,
+  TuiLink,
+  TuiLoader,
+} from '@taiga-ui/core';
 import { TuiAvatar, TuiSkeleton } from '@taiga-ui/kit';
 import { TuiInputModule, TuiTextareaModule } from '@taiga-ui/legacy';
 import { Timestamp } from 'firebase/firestore';
@@ -40,6 +46,7 @@ import { ProfileCardComponent } from '../profile-card/profile-card.component';
     TuiIcon,
     TuiInputModule,
     TuiLet,
+    TuiLink,
     TuiLoader,
     TuiSkeleton,
     TuiTextareaModule,

@@ -105,7 +105,14 @@
                         [tuiDialogOptions]="{label: 'Подписчики', size: 'l'}"
                         [(tuiDialog)]="followersOpen"
                     >
-                        <div class="sub-dialog">
+                        <div class="sub-dialog"
+                             [style.justify-content]="followers ? 'flex-start' : 'center'"
+                             [style.align-items]="followers ? 'flex-start' : 'center'"
+                        >
+                            @if (!followers) {
+                                <p>Подписчики отсутствуют.</p>
+                            }
+
                             @for (follower of followers; track follower.uid) {
                                 <lib-profile-card [user]="follower"  />
                             }
@@ -126,7 +133,24 @@
                         [tuiDialogOptions]="{label: 'Подписки', size: 'l'}"
                         [(tuiDialog)]="followingOpen"
                     >
-                        <div class="sub-dialog">
+                        <div class="sub-dialog"
+                            [style.justify-content]="followings ? 'flex-start' : 'center'"
+                            [style.align-items]="followings ? 'flex-start' : 'center'"
+                        >
+                            @if (!followings) {
+                                <span>Подписки отсутствуют.</span>
+                                @if (isCurrentUser) {
+                                    <button
+                                        iconEnd="@tui.search"
+                                        tuiLink
+                                        type="button"
+                                        routerLink="/profile/search"
+                                    >
+                                        Перейти к списку пользователей
+                                    </button>
+                                }
+                            }
+
                             @for (following of followings; track following.uid) {
                                 <lib-profile-card [user]="following"  />
                             }
