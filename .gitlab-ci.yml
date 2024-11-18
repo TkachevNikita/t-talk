@@ -7,7 +7,6 @@ stages:
 build:
   stage: build
   before_script:
-    - npm install -g firebase-tools
     - |
       echo "export const environment = {" > environments/environment.ts
       echo "  apiKey: '$FIREBASE_API_KEY'," >> environments/environment.ts
@@ -29,6 +28,8 @@ deploy:
   stage: deploy
   only:
     - staging
+  before_script:
+    - npm install -g firebase-tools
   script:
     - firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --token $FIREBASE_AUTH_TOKEN
   environment:
