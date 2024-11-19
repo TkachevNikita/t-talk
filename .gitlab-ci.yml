@@ -15,7 +15,8 @@ build:
       echo "  storageBucket: '$FIREBASE_STORAGE_BUCKET'," >> environments/environment.ts
       echo "  messagingSenderId: '$FIREBASE_MESSAGING_SENDER_ID'," >> environments/environment.ts
       echo "  appId: '$FIREBASE_APP_ID'," >> environments/environment.ts
-      echo "  measurementId: '$FIREBASE_MEASUREMENT_ID'" >> environments/environment.ts
+      echo "  measurementId: '$FIREBASE_MEASUREMENT_ID'," >> environments/environment.ts
+      echo "  sentryDsn: '$SENTRY_DSN'" >> environments/environment.ts
       echo "};" >> environments/environment.ts
   script:
     - npm install
