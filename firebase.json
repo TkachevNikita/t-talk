@@ -1,6 +1,11 @@
 {
   "hosting": {
     "public": "dist/t-talk/browser",
+    "ignore": [
+      "firebase.json",
+      "/.*",
+      "/node_modules/**"
+    ],
     "headers": [
       {
         "source": "**/*.@(js|css)",
