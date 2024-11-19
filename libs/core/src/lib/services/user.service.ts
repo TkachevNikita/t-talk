@@ -27,7 +27,6 @@ import {
   ReplaySubject,
   shareReplay,
   switchMap,
-  take,
 } from 'rxjs';
 
 @Injectable({
@@ -44,17 +43,14 @@ export class UserService {
     1,
   );
 
+  public currentUser$: Observable<UserModel> = this.userSubject$.pipe(
+    switchMap(() => this.getUserData()),
+    shareReplay({ bufferSize: 1, refCount: false }),
+    filter(Boolean),
+  );
+
   constructor() {
     this.userSubject$.next();
-  }
-
-  public get currentUser(): Observable<UserModel> {
-    return this.userSubject$.pipe(
-      take(1),
-      switchMap(() => this.getUserData()),
-      shareReplay({ bufferSize: 1, refCount: false }),
-      filter(Boolean),
-    );
   }
 
   public get isUserLoading(): Observable<boolean> {
@@ -103,7 +99,7 @@ export class UserService {
   }
 
   public isCurrentUserProfile(profileId: string): Observable<boolean> {
-    return this.currentUser.pipe(
+    return this.currentUser$.pipe(
       map((currentUser) => currentUser?.uid === profileId),
     );
   }
@@ -168,7 +164,6 @@ export class UserService {
           ),
           finalize(() => {
             this.isUserLoading$.next(false);
-            this.userSubject$.next();
           }),
         );
       }),

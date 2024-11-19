@@ -13,7 +13,7 @@ export class UserResolver implements Resolve<string | null> {
   ) {}
 
   public resolve(): Observable<string | null> {
-    return this.userService.currentUser.pipe(
+    return this.userService.currentUser$.pipe(
       map((user) => {
         if (user?.uid) {
           return user.uid;

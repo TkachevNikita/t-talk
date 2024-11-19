@@ -33,7 +33,7 @@ export class ProfileCardComponent implements OnInit {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   public readonly currentUser$: Observable<UserModel> =
-    this.userService.currentUser;
+    this.userService.currentUser$;
 
   public readonly followingsLoading$: Observable<boolean> =
     this.followerService.currentFollowersLoading;

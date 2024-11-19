@@ -43,7 +43,7 @@ import {
   TuiInputModule,
   TuiTextareaModule,
 } from '@taiga-ui/legacy';
-import { catchError, filter, Observable, switchMap } from 'rxjs';
+import { catchError, filter, Observable, switchMap, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -100,7 +100,7 @@ export class ProfileEditComponent implements OnInit {
   protected newPicture: string | null = null;
 
   public ngOnInit(): void {
-    this.user$ = this.userService.currentUser;
+    this.user$ = this.userService.currentUser$;
 
     this.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (user) => {
@@ -134,6 +134,7 @@ export class ProfileEditComponent implements OnInit {
   protected updateUser(): void {
     this.user$
       .pipe(
+        take(1),
         switchMap((user) => {
           const avatar = this.profileForm.controls['avatar'].value;
           // eslint-disable-next-line @typescript-eslint/no-unused-vars,sonarjs/sonar-no-unused-vars

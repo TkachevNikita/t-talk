@@ -86,7 +86,7 @@ export class ProfileComponent implements OnInit {
   protected switch = false;
 
   public ngOnInit(): void {
-    this.user$ = this.userService.currentUser;
+    this.user$ = this.userService.currentUser$;
     this.activatedRoute.data
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {

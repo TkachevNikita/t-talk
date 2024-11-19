@@ -93,7 +93,7 @@ export class ProfileOverviewComponent implements OnInit {
             this.isCurrentUser = isCurrentUser;
 
             return isCurrentUser
-              ? this.userService.currentUser
+              ? this.userService.currentUser$
               : this.userService.getUserById(params['id']);
           }),
         );

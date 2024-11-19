@@ -140,7 +140,7 @@ export class FollowerService {
   public getCurrentUsingFollowings(): Observable<UserModel[]> {
     this.currentFollowersLoadingSubject$.next(true);
 
-    return this.userService.currentUser.pipe(
+    return this.userService.currentUser$.pipe(
       switchMap((currentUser) => this.getFollowing(currentUser.uid!)),
     );
   }

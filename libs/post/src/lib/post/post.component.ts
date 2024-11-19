@@ -105,7 +105,7 @@ export class PostComponent implements OnInit {
   public comments$!: Observable<CommentModel[]>;
 
   public ngOnInit(): void {
-    this.user$ = this.userService.currentUser;
+    this.user$ = this.userService.currentUser$;
     this.comments$ = this.commentService
       .getComments(this.post.id!)
       .pipe(filter(Boolean));
