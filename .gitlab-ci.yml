@@ -1,8 +1,8 @@
 image: node:20
 
 stages:
-  - install deps
   - build
+  - test
   - deploy
 build:
   stage: build
@@ -24,7 +24,10 @@ build:
   artifacts:
     paths:
       - dist/t-talk/browser/
-
+test:
+  stage: test
+  script:
+    - npm run test
 deploy:
   stage: deploy
   only:
