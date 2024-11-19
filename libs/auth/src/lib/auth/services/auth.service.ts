@@ -8,6 +8,7 @@ import {
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { AnalyticsService } from '@t-talk/core';
 import { IUser } from '@t-talk/shared';
 import { from, Observable, switchMap, tap } from 'rxjs';
 
@@ -18,6 +19,8 @@ export class AuthService implements IAuthService {
   private readonly fireAuth: Auth = inject(Auth);
   private readonly fireStore: Firestore = inject(Firestore);
   private readonly router: Router = inject(Router);
+  private readonly analyticsService: AnalyticsService =
+    inject(AnalyticsService);
 
   public register(user: IUser): Observable<void> {
     return from(
@@ -48,9 +51,13 @@ export class AuthService implements IAuthService {
     return from(
       signInWithEmailAndPassword(this.fireAuth, email, password),
     ).pipe(
-      tap(async (userCred) =>
-        this.router.navigate([`/profile/${userCred.user.uid}`]),
-      ),
+      tap(async (userCred) => {
+        this.analyticsService.sendEvent('user_logged_in', {
+          uid: userCred.user.uid,
+          email,
+        });
+        await this.router.navigate([`/profile/${userCred.user.uid}`]);
+      }),
     );
   }
 }
