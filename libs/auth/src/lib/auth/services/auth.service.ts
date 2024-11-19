@@ -9,7 +9,7 @@ import {
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { IUser } from '@t-talk/shared';
-import { catchError, from, Observable, switchMap, tap } from 'rxjs';
+import { from, Observable, switchMap, tap } from 'rxjs';
 
 import { IAuthService } from '../interfaces/auth-service.interface';
 
@@ -37,11 +37,6 @@ export class AuthService implements IAuthService {
         );
       }),
       tap(async () => this.router.navigate(['/profile'])),
-      catchError((error: unknown) => {
-        console.error('Ошибка при регистрации');
-
-        throw error;
-      }),
     );
   }
 
