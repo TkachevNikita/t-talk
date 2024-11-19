@@ -73,6 +73,9 @@ export class ProfileOverviewComponent implements OnInit {
   protected isUserLoading$: Observable<boolean> =
     this.userService.isUserLoading;
 
+  protected readonly isFollowLoading$: Observable<boolean> =
+    this.followerService.followersLoading;
+
   protected postControl: FormControl<string> = new FormControl<string>('', {
     nonNullable: true,
   });

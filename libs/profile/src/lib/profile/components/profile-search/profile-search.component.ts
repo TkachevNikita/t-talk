@@ -35,9 +35,6 @@ export class ProfileSearchComponent implements OnInit {
   private readonly userService: UserService = inject(UserService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  protected usersLoading$: Observable<boolean> =
-    this.userService.isUsersListLoading;
-
   protected users$!: Observable<UserModel[]>;
   protected searchControl: FormControl<string> = new FormControl<string>('', {
     nonNullable: true,

@@ -13,7 +13,7 @@ import { UserService } from '@t-talk/core';
 import { UserModel } from '@t-talk/shared';
 import { TuiLet } from '@taiga-ui/cdk';
 import { TuiButton, TuiLink } from '@taiga-ui/core';
-import { TuiAvatar } from '@taiga-ui/kit';
+import { TuiAvatar, TuiSkeleton } from '@taiga-ui/kit';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 
 import { FollowerService } from '../../../../../../core/src/lib/services/follower.service';
@@ -21,7 +21,7 @@ import { FollowerService } from '../../../../../../core/src/lib/services/followe
 @Component({
   standalone: true,
   selector: 'lib-profile-card',
-  imports: [AsyncPipe, TuiAvatar, TuiButton, TuiLet, TuiLink],
+  imports: [AsyncPipe, TuiAvatar, TuiButton, TuiLet, TuiLink, TuiSkeleton],
   templateUrl: './profile-card.component.html',
   styleUrls: ['./profile-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +34,9 @@ export class ProfileCardComponent implements OnInit {
 
   public readonly currentUser$: Observable<UserModel> =
     this.userService.currentUser;
+
+  public readonly followingsLoading$: Observable<boolean> =
+    this.followerService.currentFollowersLoading;
 
   @Input({ required: true })
   public user!: UserModel;
@@ -76,17 +79,12 @@ export class ProfileCardComponent implements OnInit {
   }
 
   private checkFollowingStatus(): void {
-    this.currentUser$
+    this.followerService
+      .getCurrentUsingFollowings()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        switchMap((currentUser) =>
-          this.followerService
-            .getFollowing(currentUser.uid!)
-            .pipe(
-              switchMap((following) =>
-                of(following.some((user) => user.uid === this.user.uid)),
-              ),
-            ),
+        switchMap((following) =>
+          of(following.some((user) => user.uid === this.user.uid)),
         ),
       )
       .subscribe((isFollowing) => {

@@ -114,7 +114,7 @@
                             }
 
                             @for (follower of followers; track follower.uid) {
-                                <lib-profile-card [user]="follower"  />
+                                <lib-profile-card [user]="follower" [tuiSkeleton]="(isFollowLoading$ | async)!"/>
                             }
                         </div>
 

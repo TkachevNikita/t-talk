@@ -10,7 +10,9 @@ import {
 import { UserService } from '@t-talk/core';
 import { UserModel } from '@t-talk/shared';
 import {
+  BehaviorSubject,
   filter,
+  finalize,
   forkJoin,
   from,
   map,
@@ -25,6 +27,17 @@ import {
 export class FollowerService {
   private readonly fireStore: Firestore = inject(Firestore);
   private readonly userService: UserService = inject(UserService);
+  private readonly followersLoadingSubject$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
+  private readonly currentFollowersLoadingSubject$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
+  public followersLoading: Observable<boolean> =
+    this.followersLoadingSubject$.asObservable();
+
+  public currentFollowersLoading: Observable<boolean> =
+    this.currentFollowersLoadingSubject$.asObservable();
 
   public getFollowing(userId: string): Observable<UserModel[]> {
     const followingRef = collection(
@@ -33,6 +46,8 @@ export class FollowerService {
       userId,
       'following',
     );
+
+    this.followersLoadingSubject$.next(true);
 
     return from(getDocs(followingRef)).pipe(
       switchMap((snapshot) => {
@@ -45,6 +60,10 @@ export class FollowerService {
         );
       }),
       shareReplay({ bufferSize: 1, refCount: false }),
+      finalize(() => {
+        this.currentFollowersLoadingSubject$.next(false);
+        this.followersLoadingSubject$.next(false);
+      }),
     );
   }
 
@@ -116,5 +135,13 @@ export class FollowerService {
     return from(
       Promise.all([deleteDoc(followingRef), deleteDoc(followersRef)]),
     ).pipe(map(() => {}));
+  }
+
+  public getCurrentUsingFollowings(): Observable<UserModel[]> {
+    this.currentFollowersLoadingSubject$.next(true);
+
+    return this.userService.currentUser.pipe(
+      switchMap((currentUser) => this.getFollowing(currentUser.uid!)),
+    );
   }
 }
