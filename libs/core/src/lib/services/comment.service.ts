@@ -3,7 +3,6 @@ import {
   addDoc,
   collection,
   deleteDoc,
-  doc,
   Firestore,
   getDocs,
   orderBy,
@@ -49,18 +48,6 @@ export class CommentService {
     return from(addDoc(this.commentCollection, comment)).pipe(
       switchMap(() => this.fetchCommentsFromStore(comment.postId)),
       tap(() => this.refreshData()),
-    );
-  }
-
-  public deleteComment(
-    commentId: string,
-    postId: string,
-  ): Observable<CommentModel[]> {
-    const commentRef = doc(this.fireStore, `comments/${commentId}`);
-
-    return from(deleteDoc(commentRef)).pipe(
-      switchMap(() => this.fetchCommentsFromStore(postId)),
-      tap(() => this.refreshSubject$.next()),
     );
   }
 

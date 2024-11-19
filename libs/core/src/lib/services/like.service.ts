@@ -11,6 +11,7 @@ import {
 } from '@angular/fire/firestore';
 import { ILike, IPost } from '@t-talk/shared';
 import { from, map, Observable, switchMap } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class LikeService {
@@ -18,7 +19,7 @@ export class LikeService {
   private readonly likesCollection = collection(this.firestore, 'likes');
 
   public setLike(postId: string, userId: string): Observable<void> {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     const postRef = doc(this.firestore, `posts/${postId}`);
     const likeRef = doc(this.firestore, `likes/${id}`);
 

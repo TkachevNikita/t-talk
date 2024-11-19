@@ -42,12 +42,12 @@ export class LoginComponent {
   private readonly authService: AuthService = inject(AuthService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  protected readonly loginForm = new FormGroup({
+  public readonly loginForm = new FormGroup({
     email: new FormControl<string>('', [Validators.required]),
     password: new FormControl<string>('', [Validators.required]),
   });
 
-  protected login(): void {
+  public login(): void {
     this.authService
       .login(
         this.loginForm.controls.email.value!,

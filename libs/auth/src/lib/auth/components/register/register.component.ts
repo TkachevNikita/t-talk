@@ -67,8 +67,8 @@ export class RegisterComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  protected activeStepIndex = 0;
-  protected readonly registerForm: FormGroup = new FormGroup({
+  public activeStepIndex = 0;
+  public readonly registerForm: FormGroup = new FormGroup({
     firstName: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
@@ -103,7 +103,7 @@ export class RegisterComponent implements OnInit {
     repeatPasswordControl.updateValueAndValidity();
   }
 
-  protected register(): void {
+  public register(): void {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { repeatPassword, ...formData } = this.registerForm.value;
 
@@ -117,11 +117,11 @@ export class RegisterComponent implements OnInit {
       .subscribe();
   }
 
-  protected nextStep(): void {
+  public nextStep(): void {
     this.activeStepIndex++;
   }
 
-  protected computeError(controlName: string): TuiValidationError | null {
+  public computeError(controlName: string): TuiValidationError | null {
     const control = this.registerForm.controls[controlName];
 
     return !control.untouched ? errorMatcher(control) : null;
